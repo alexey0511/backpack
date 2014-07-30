@@ -1,0 +1,27 @@
+{
+  "name": "better-you",
+  "version": "0.0.0",
+  "description": "this is a test app",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexey0511/test-app.git"
+  },
+  "keywords": [
+    "test",
+    "app"
+  ],
+  "author": "alexe0511",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexey0511/test-app/issues"
+  },
+  "homepage": "https://github.com/alexey0511/test-app",
+  "dependencies": {
+    "express": "^4.7.2",
+    "logfmt": "^1.1.2"
+  }
+}
