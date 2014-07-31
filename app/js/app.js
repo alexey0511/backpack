@@ -27,3 +27,4 @@ app.config(function($routeProvider, $httpProvider) {
 
     $routeProvider.otherwise({redirectTo: '/login'});
 });
+

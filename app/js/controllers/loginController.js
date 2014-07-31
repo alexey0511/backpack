@@ -8,7 +8,12 @@ $scope.credentials = {
         password: '',
         role:''
     };
-    $scope.getAuthentication = function() {
+$scope.facebookLogin = function()
+{
+alert("Login with facebook");    
+};
+
+$scope.getAuthentication = function() {
         if (Session.userId !== '') {
             $scope.user.userId = Session.userId;
           $scope.isAuthenticated = LoginService.isAuthenticated(Session);

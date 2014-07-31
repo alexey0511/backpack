@@ -1,3 +1,6 @@
+
+
+
 <div ng-controller="LoginControllerNew" style="float: right;background-color: #d9edf7; border: 1px solid black; display: block; padding: 20px; margin-right: 20px">
     <button class="btn" ng-click="getAuthentication()">Get Authentication</button><br>
     Status: <span ng-model="status">{{isAuthenticated}}</span> <br>
@@ -7,6 +10,7 @@
 </div>
 <div  ng-hide="isAuthenticated" id="login" class="row" >
     LOGIN<div  class="large-6 large-offset-3">
+        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false" onlogin="facebookLogin()"></div>
         <form  ng-submit="login(credentials)" style="padding: 20px;">
             <fieldset class="radius">
                 <div class="row">
