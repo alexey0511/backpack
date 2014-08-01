@@ -13,4 +13,4 @@ app.post('/*', function(req, res){
 
 
 
-server = http.createServer(app);
+var server = http.createServer(app);
