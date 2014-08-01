@@ -10,3 +10,7 @@ app.listen(process.env.PORT);
 app.post('/*', function(req, res){
   res.sendfile('index.html');
 });
+
+
+
+server = http.createServer(app);
