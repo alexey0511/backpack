@@ -6,7 +6,6 @@ app.use(logfmt.requestLogger());
 app.use(express.static('app'));
 app.listen(process.env.PORT);
 
-server.post('/*', function(req, res){
-
+app.post('/*', function(req, res){
   res.sendfile('index.html');
 });
