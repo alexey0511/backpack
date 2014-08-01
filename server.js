@@ -7,10 +7,10 @@
 //app.listen(process.env.PORT);
 
 var express = require('express');
-var http = require('http');
+//var http = require('http');
 var app = express();
 
-app.set('port', process.env.PORT || 80);
+//app.set('port', process.env.PORT || 80);
 
 //DEFINE ALL ROUTES
 app.get('/', routes.dashboard.index);
