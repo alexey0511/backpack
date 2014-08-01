@@ -23,6 +23,7 @@
   "homepage": "https://github.com/alexey0511/test-app",
   "dependencies": {
     "express": "^4.7.2",
+    "http": "0.0.0",
     "logfmt": "^1.1.2"
   },
   "devDependencies": {}
