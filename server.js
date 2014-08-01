@@ -1,10 +1,10 @@
-var express = require("express");
-var logfmt = require("logfmt");
-var app = express();
+//var express = require("express");
+//var logfmt = require("logfmt");
+//var app = express();
 
-app.use(logfmt.requestLogger());
-app.use(express.static('app'));
-app.listen(process.env.PORT);
+//app.use(logfmt.requestLogger());
+//app.use(express.static('app'));
+//app.listen(process.env.PORT);
 
 var express = require('express');
 var http = require('http');
