@@ -1,0 +1,41 @@
+
+
+
+<div ng-controller="LoginControllerNew" style="float: right;background-color: #d9edf7; border: 1px solid black; display: block; padding: 20px; margin-right: 20px">
+    <button class="btn" ng-click="getAuthentication()">Get Authentication</button><br>
+    Status: <span ng-model="status">{{isAuthenticated}}</span> <br>
+"<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1">Login w/ Facebook</div>"
+
+'    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="true" data-auto-logout-link="false"></div>
+'
+    <div ng-show="isAuthenticated">
+        <h1>Hello {{user.userId}}</h1>
+        <a ng-click="signOut()"> Sign Out</a>
+    </div>
+    <div  ng-hide="isAuthenticated" id="login" class="row" >
+        LOGIN<div  class="large-6 large-offset-3">
+            <form  ng-submit="login(credentials)" style="padding: 20px;">
+                <fieldset class="radius">
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <input type="text" name="username" placeholder="username"
+                                   ng-model='credentials.username' required />
+                        </div>
+                        <div class="large-6 columns">
+                            <input type="password" name="password" placeholder="password" 
+                                   ng-model='credentials.password'  />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <button type="submit" class="button large expand radius">LogIn</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <a href='#'> Forgot your password?</a><br>
+            <a href='#'>Sign Up</a>
+        </div>
+    </div>
+
+</div>
