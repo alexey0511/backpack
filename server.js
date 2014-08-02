@@ -20,9 +20,11 @@ var logfmt = require("logfmt");
 var app = express();
 
 app.use(logfmt.requestLogger());
+app.use(express.static('app'));
+//app.listen(process.env.PORT);
 
 app.get('/', function(req, res) {
-  res.send('Hello World!');
+  res.send('Hello World! PORT: ' +process.env.PORT);
 });
 
 var port = Number(process.env.PORT || 5000);
