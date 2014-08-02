@@ -20,7 +20,7 @@ var logfmt = require("logfmt");
 var app = express();
 
 app.use(logfmt.requestLogger());
-app.use(express.static('app'));
+app.use(express.static('./app'));
 //app.listen(process.env.PORT);
 
 app.get('/', function(req, res) {
@@ -33,5 +33,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-   res.sendfile('index1.html');
+   res.sendfile('./app/index1.html');
  });
