@@ -33,5 +33,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-   res.sendfile('index2.html');
+   res.sendfile('index.html');
  });
