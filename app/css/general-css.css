@@ -1,11 +1,22 @@
+.width800 {
+    width: 1000px;
+    margin: auto;
+}
+
 .task:hover {
     cursor: pointer;
     background-color: #9f9;
 }
-
+.task {
+    padding: 10px 30px; border: 1px solid black
+}
+.working-true {
+ background-color: #fbb450;   
+}
 .done-true{
     text-decoration: line-through;
     color: grey;
+    background-color: gainsboro;
 }
 
 .done {

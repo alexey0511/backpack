@@ -1,30 +1,62 @@
 <div id="new_main" >
-    <div class='container-fluid'>
-        <h2>Tasks for this week: {{getTotalweekGoals()}}</h2>
-        <div class='row'>
-        <span class="col-md-3">Done</span>
-        <span class="col-md-4">Name</span>
-        <span class="col-md-2">Working on</span>
-        </div>
-        
-        <ul class="unstyled" >
-            <li ng-repeat="weekGoal in weekGoals1" class='row' style='margin: -20px 0 0 0;'>
-                    <input type="checkbox" ng-model="weekGoal.done" class='col-md-1'>
-                <div style="padding: 10px 30px; border: 1px solid black" class="bg-warning task col-md-3" ng-click="click(weekGoal._id.$oid)" data-id='{{weekGoal._id.$oid}}'>
-                    <span class="done-{{weekGoal.done}}" >{{weekGoal.name}} </span> 
+    <div class='container-fluid' >
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default" style="margin: 0">
+                <div class="panel-heading bg-info">
+                    <h2 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseWeek">Tasks for this week:
+                        </a>
+                    </h2>
                 </div>
-                    <input type="checkbox" ng-model="weekGoal.active" class='col-md-2'>
-            </li>
-        </ul>
-            <button style="width: 300px; height: 50px;" class="btn bg-primary btn-large" ng-click="openAddWeekDialog()"> <i class="icon-plus"></i>Add</button>
-
-        <button class="btn-large" ng-click="ClearCompleted()"><i class="icon-trash"></i>Clear</button>
-        <br><br><a ng-click='logout()' href='#'>Logout</a>
-        <br><br><a href='#home'>back home</a>
+                <div id="collapseWeek" class="panel-collapse collapse in">
+                    <div class="panel-body row" >
+                        <div class="col-md-4">
+                            <span>Tasks for Week # </span>
+                            <input type='number' size='4' min="0" max='53' ng-model='currentWeek'/>
+                        </div>
+                        <div class="col-md-4">
+                            <span>Total Load: {{totalCost}}</span>  
+                            <input type="checkbox" ng-click="calculateTotalCosts()" ng-model="totalCostsChk" class='col-md-1'>
+                        </div>
+                        <div class="col-md-4"> 
+                            <span>Earned:         {{actualCost}}</span>
+                            <input type="checkbox" ng-click="calculateTotalCostsActual()" ng-model="actualCostsChk" class='col-md-1'>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <span class="col-md-10">Name</span>
+                        <span class="col-md-1">Working on</span>
+                        <span class="col-md-1">Done</span>
+                    </div>
+                    <div>
+                        <ul class="unstyled list-group" >
+                            <li class="list-group-item" ng-repeat="weekGoal in weekGoals1| filter : {week : currentWeek}:true" >
+                                <div class="row">
+                                    <div class="bg-warning task col-md-10 
+                                         working-{{weekGoal.active}}
+                                         done-{{weekGoal.done}}"
+                                         ng-click="click(weekGoal._id.$oid)" data-id='{{weekGoal._id.$oid}}'>
+                                        <span class="" >{{weekGoal.name}}</span> 
+                                    </div>
+                                    <input type="checkbox" ng-model="weekGoal.active" ng-click="CurrentlyWorking()" class='col-md-1'>
+                                    <input type="checkbox" ng-model="weekGoal.done" class='col-md-1'>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">  
+                        <button class="col-md-12 btn bg-primary" style=" height: 50px;" ng-click="openAddWeekDialog()">
+                            <i class="icon-plus"></i>Add</button>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <button class="btn-large" ng-click="ClearCompleted()"><i class="icon-trash"></i>Clear</button>
+            <br><br><a ng-click='logout()' href='#'>Logout</a>
+            <br><br><a href='#home'>back home</a>
+        </div>
     </div>
-
 </div>
-
 <div style='border: 1px solid black; width: 1000px;'>
     <h1>Goals for the year</h1>
     <div style=' margin-top: 20px;'>

@@ -1,39 +1,60 @@
 
-<div class="container-fluid" style="width: 400px">
+<div class="container-fluid" >
     <form class="horisontal">
         <fieldset>
-            <h1 class="row"> Add New Task</h1>
-            <div class="row" ng-show='false'> <span class="col-md-6" >ID: </span>
-                <input  class="col-md-6" type="text" ng-model="weekGoal._id.$oid" >
+            <h1> Task for a week</h1>
+            <div class="row"> <span class="col-md-3">user</span>
+                <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal.userId">
+            </div>  
+            <div class="row" ng-readonly='false'> <span class="col-md-3" >ID: </span>
+                <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal._id.$oid" >
             </div>
-            <div class="row"> <span class="col-md-6">Name</span>
+            <div class="row"><span class="col-md-3">Name</span>
                 <input  class="col-md-6" type="text" ng-model="weekGoal.name" >
             </div>
-            <div> <span class="col-md-6">Award</span>
-                <input class="col-md-6" class="col-md-6" type="text" ng-model="weekGoal.award">
+            <div class="row"> <span class="col-md-3">Award</span>
+                <input class="col-md-6" type="text" ng-model="weekGoal.award">
             </div>
-            <div> <span class="col-md-6">Penalty</span>
+            <div class="row"> <span class="col-md-3">Penalty</span>
                 <input class="col-md-6" type="text" ng-model="weekGoal.penalty">
             </div>
-            <div> <span class="col-md-6">year</span>
-                <div></div>
-                <input class="col-md-6" type="text" ng-model="weekGoal.year">
+            <div class="row"> <span class="col-md-3">Week</span>
+
+                <select ng-model="weekGoal.week" ng-options="week as week for week in weeks" class="col-md-6">
+                    <option>---</option>
+                </select>
             </div>
-            <div> <span class="col-md-6">Month</span>
-                <input class="col-md-6" type="text" ng-model="weekGoal.month">
+            <div class="row"> <span class="col-md-3">Month</span>
+                <select ng-model="weekGoal.month" ng-options="month.id as month.value for month in months" class="col-md-6">
+                    <option>---</option>
+                </select>
+            </div >
+            <div class="row"> <span class="col-md-3">year</span>
+                <select ng-model="weekGoal.year" ng-options="year for year in years" class="col-md-6" >
+                    <option>---</option>
+                </select>
             </div>
-            <div> <span class="col-md-6">Description</span>
+            <div class="row"> <span class="col-md-3">Working</span>
+                <input type="checkbox" ng-model="weekGoal.working" class='col-md-1'>
+            </div>
+            <div class="row"> <span class="col-md-3">Cost</span>
+                <input type='number' class="col-md-6" min="0" max='50' ng-model='weekGoal.cost'/>
+            </div>
+            <div class="row"> <span class="col-md-3">Completed</span>
+                <input type="checkbox" ng-model="weekGoal.done" class='col-md-1'>
+            </div>
+            <div class="row" > <span class="col-md-3">Description</span>
                 <textarea class="col-md-6" type="textarea" ng-model="weekGoal.description" ></textarea>
             </div>
-            <div> <span class="col-md-6">Responsible</span>
+            <div class="row"> <span class="col-md-3">Responsible</span>
                 <select class="col-md-6">
                     <option value="1">me</option>
                     <option value="1">other user</option>
                 </select>
-                <button class="btn btn-warning" ng-click="updateWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>Update</button>
-                <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal1()" > <i class="icon-plus"></i>Add</button>
-                <button class="btn btn-danger" ng-click="deleteWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>DELETE</button>
             </div>
+            <button class="btn btn-warning" ng-show="weekGoal._id" ng-click="updateWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>Update</button>
+            <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal1()" > <i class="icon-plus"></i>Add</button>
+            <button class="btn btn-danger" ng-show="weekGoal._id" ng-click="deleteWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>DELETE</button>
         </fieldset> 
     </form>
 </div>

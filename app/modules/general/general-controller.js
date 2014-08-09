@@ -7,7 +7,8 @@ var generalModule = angular.module('general-module', [
 
 // LOGIN PAGE CONTROLLER
 generalModule.controller('loginController', function($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService, $facebook) {
-   $scope.user = {};
+
+    $scope.user = {};
      $scope.user.first_name = "stranger";
     $facebook.getLoginStatus().then(
             function(response) {
