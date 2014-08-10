@@ -6,8 +6,26 @@ var generalModule = angular.module('general-module', [
 
 
 // LOGIN PAGE CONTROLLER
-generalModule.controller('loginController', function($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
+generalModule.controller('loginController', function($scope, appConfig, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
 console.log("start");
+window.fbAsyncInit = function() {
+    alert("1");
+    FB.init({
+        appId: appConfig.fbId,
+        cookie: true, // enable cookies to allow the server to access 
+        // the session
+        xfbml: true, // parse social plugins on this page
+        version: 'v2.0' // use version 2.0
+    });
+    };
+    FB.init({
+        appId: appId,
+        cookie: true, // enable cookies to allow the server to access 
+        // the session
+        xfbml: true, // parse social plugins on this page
+        version: 'v2.0' // use version 2.0
+    });
+    
     $scope.user = {};
     $scope.user.first_name = "stranger";
     FB.getLoginStatus(function(response) {
