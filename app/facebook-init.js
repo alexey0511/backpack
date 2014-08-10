@@ -1,4 +1,4 @@
-var appId = '1526114560951318';
+var appId = '1523326674563440';
 //            var siteRoot = 'better-you-v0-1.herokuapp.com';
 var siteRoot = 'local.host.com';
 // This is called with the results from from FB.getLoginStatus().
