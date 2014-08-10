@@ -5,12 +5,12 @@ var app = angular.module('better-you', [
     'ngRoute',
     'ngResource',
     'ngProgress',
-    'ngFacebook',
     'ui.bootstrap',
     'ngDialog',
     'ngCookies',
     'ui.slider'
 ]);
+
 
 app.constant('appConfig', {
     DbId: 'Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo',
@@ -22,12 +22,8 @@ app.constant('appConfig', {
 // Page redirection
 
   //// end test
-app.config(function($routeProvider, $httpProvider, $facebookProvider) {
+app.config(function($routeProvider, $httpProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-   $facebookProvider.setAppId('1523326674563440');
-   $facebookProvider.setCustomInit({
-     version    : 'v2.0'
-   });
     $routeProvider.when('/loading', {
         templateUrl: 'modules/general/loading.html',
         controller: 'loadingController'

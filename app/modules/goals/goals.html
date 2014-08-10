@@ -30,12 +30,12 @@
                     </div>
                     <div>
                         <ul class="unstyled list-group" >
-                            <li class="list-group-item" ng-repeat="weekGoal in weekGoals1| filter : {week : currentWeek}:true" >
+                            <li class="list-group-item" ng-repeat="weekGoal in weekGoals| filter : {week : currentWeek}:true" >
                                 <div class="row">
                                     <div class="bg-warning task col-md-10 
                                          working-{{weekGoal.active}}
                                          done-{{weekGoal.done}}"
-                                         ng-click="click(weekGoal._id.$oid)" data-id='{{weekGoal._id.$oid}}'>
+                                         ng-click="click(weekGoal.id)" data-id='{{weekGoal.id}}'>
                                         <span class="" >{{weekGoal.name}}</span> 
                                     </div>
                                     <input type="checkbox" ng-model="weekGoal.active" ng-click="CurrentlyWorking()" class='col-md-1'>
@@ -57,7 +57,7 @@
         </div>
     </div>
 </div>
-<div style='border: 1px solid black; width: 1000px;'>
+<!--<div style='border: 1px solid black; width: 1000px;'>
     <h1>Goals for the year</h1>
     <div style=' margin-top: 20px;'>
         <div style='display: inline; float: right; border: 1px solid black; '>
@@ -156,4 +156,4 @@
         <td style='border: 1px solid black; background-color: gainsboro; padding: 5px;'>{{weekGoal.month}}</td>
         <td style='border: 1px solid black; background-color: gainsboro; padding: 5px;'>{{weekGoal.year}}</td>
     </tr>
-</table>
+</table>-->

@@ -6,21 +6,19 @@ var generalModule = angular.module('general-module', [
 
 
 // LOGIN PAGE CONTROLLER
-generalModule.controller('loginController', function($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService, $facebook) {
+generalModule.controller('loginController', function($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
 
     $scope.user = {};
-     $scope.user.first_name = "stranger";
-    $facebook.getLoginStatus().then(
-            function(response) {
-                console.log(response);
-            });
-    $facebook.api("/me").then(
-            function(response) {
-                console.log(response);
-                document.getElementById('status').className = "alert alert-success";
-                $scope.user.first_name = response.first_name;
-            });
-            
+    $scope.user.first_name = "stranger";
+    FB.getLoginStatus(function(response) {
+        console.log(response);
+    });
+    FB.api("/me", function(response) {
+        console.log(response);
+        document.getElementById('status').className = "alert alert-success";
+        $scope.user.first_name = response.first_name;
+    });
+
 
     $scope.credentials = {
         username: '',
@@ -51,7 +49,7 @@ generalModule.controller('loginController', function($scope, $cookieStore, $root
                             Session.create("1", $scope.user.username, $scope.user.role, $scope.user.score);
                             $scope.getAuthentication();
                             $cookieStore.put('current_user', $scope.user);
-                            
+
                             console.log("user cook:", $cookieStore.get('current_user'));
                             document.getElementById('status').className = "alert alert-success";
                         } else if (user.data.length === 0) {

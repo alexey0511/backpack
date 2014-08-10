@@ -1,6 +1,6 @@
 
 <div class="container-fluid" >
-    <form class="horisontal">
+    <form class="horisontal" ng-submit="addWeekGoal()">
         <fieldset>
             <h1> Task for a week</h1>
             <div class="row"> <span class="col-md-3">user</span>
@@ -10,10 +10,10 @@
                 <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal._id.$oid" >
             </div>
             <div class="row"><span class="col-md-3">Name</span>
-                <input  class="col-md-6" type="text" ng-model="weekGoal.name" >
+                <input  class="col-md-6" type="text" ng-model="weekGoal.name" required>
             </div>
             <div class="row"> <span class="col-md-3">Award</span>
-                <input class="col-md-6" type="text" ng-model="weekGoal.award">
+                <input class="col-md-6" type="text" ng-model="weekGoal.award" required>
             </div>
             <div class="row"> <span class="col-md-3">Penalty</span>
                 <input class="col-md-6" type="text" ng-model="weekGoal.penalty">
@@ -35,10 +35,10 @@
                 </select>
             </div>
             <div class="row"> <span class="col-md-3">Working</span>
-                <input type="checkbox" ng-model="weekGoal.working" class='col-md-1'>
+                <input type="checkbox" ng-model="weekGoal.active" class='col-md-1'>
             </div>
             <div class="row"> <span class="col-md-3">Cost</span>
-                <input type='number' class="col-md-6" min="0" max='50' ng-model='weekGoal.cost'/>
+                <input type='number' class="col-md-6" min="0" max='50' ng-model='weekGoal.cost' required />
             </div>
             <div class="row"> <span class="col-md-3">Completed</span>
                 <input type="checkbox" ng-model="weekGoal.done" class='col-md-1'>
@@ -53,7 +53,8 @@
                 </select>
             </div>
             <button class="btn btn-warning" ng-show="weekGoal._id" ng-click="updateWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>Update</button>
-            <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal1()" > <i class="icon-plus"></i>Add</button>
+<!--            <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal()" > <i class="icon-plus"></i>Add</button>-->
+            <button class="btn btn-success" ng-hide="weekGoal._id" type="submit" > <i class="icon-plus"></i>Add</button>
             <button class="btn btn-danger" ng-show="weekGoal._id" ng-click="deleteWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>DELETE</button>
         </fieldset> 
     </form>
