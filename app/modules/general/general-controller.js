@@ -7,7 +7,7 @@ var generalModule = angular.module('general-module', [
 
 // LOGIN PAGE CONTROLLER
 generalModule.controller('loginController', function($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
-
+console.log("start");
     $scope.user = {};
     $scope.user.first_name = "stranger";
     FB.getLoginStatus(function(response) {
@@ -18,7 +18,6 @@ generalModule.controller('loginController', function($scope, $cookieStore, $root
         document.getElementById('status').className = "alert alert-success";
         $scope.user.first_name = response.first_name;
     });
-
 
     $scope.credentials = {
         username: '',

@@ -80,8 +80,8 @@ function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
         console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-                'Hello ' + response.name + '!';
-        document.getElementById('status').className = "alert alert-success";
+//        document.getElementById('status').innerHTML =
+//                'Hello ' + response.name + '!';
+//        document.getElementById('status').className = "alert alert-success";
     });
 }
