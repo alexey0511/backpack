@@ -1,4 +1,4 @@
-var appId = '1523326674563440';
+var appId = '1526114560951318';
 //            var siteRoot = 'better-you-v0-1.herokuapp.com';
 var siteRoot = 'local.host.com';
 // This is called with the results from from FB.getLoginStatus().
@@ -37,12 +37,13 @@ function checkLoginState() {
 }
 
 window.fbAsyncInit = function() {
+    alert("1");
     FB.init({
         appId: appId,
         cookie: true, // enable cookies to allow the server to access 
         // the session
         xfbml: true, // parse social plugins on this page
-        version: 'v1.0' // use version 2.0
+        version: 'v2.0' // use version 2.0
     });
 
     // Now that we've initialized the JavaScript SDK, we call 
