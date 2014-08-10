@@ -26,7 +26,7 @@ app.config(function($routeProvider, $httpProvider, $facebookProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
    $facebookProvider.setAppId('1523326674563440');
    $facebookProvider.setCustomInit({
-     version    : 'v1.0'
+     version    : 'v2.0'
    });
     $routeProvider.when('/loading', {
         templateUrl: 'modules/general/loading.html',
