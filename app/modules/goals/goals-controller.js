@@ -1,9 +1,6 @@
 
 var goalsModule = angular.module('goals-module', [
 ]);
-
-
-
 goalsModule.controller('goalsController', function($scope, dateService, $cookieStore, ngDialog, DbActionsService, $location,
         /*ygRepository, mgRepository, wgRepository, YearGoalC, MonthGoalC, WeekGoalC, LoginService, Session,*/$rootScope) {
     /*
@@ -18,24 +15,32 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
 // 
 // UPDATE COOKIE
     $scope.updateCookie = function(weekGoals, currentWeek) {
+        // 
+        console.log('...updateCookie...');
+        $scope.userData.goals.weekGoals[currentWeek] = [];
         // CREATE COOKIE WITH WEEKGOALS
-        console.log("BEFORE LOAD INTO COOKIE");
+        for (i = 0; i < weekGoals.length; i++) {
+            if (typeof(weekGoals[i]._id) !== 'undefined') {
+                weekGoals[i].id = weekGoals[i]._id.$oid;
+                //            delete weekGoals[i]._id;
+                console.log("creating ID: ", weekGoals[i].id);
+            } else {
+                console.log("ID: ", weekGoals[i].id);
+            }
+        }
         $scope.userData.goals.weekGoals[currentWeek] = weekGoals;
         $cookieStore.remove('user_data');
-        // reassign _ID to ID;
-        var length = $scope.userData.goals.weekGoals[currentWeek].length;
-        for (i = 0; i < length; i++) {
-            $scope.userData.goals.weekGoals[currentWeek][i].id = $scope.userData.goals.weekGoals[currentWeek][i]._id.$oid;
-        }
-        // reassisgn id END
-        console.log("WEEK G", $scope.weekGoals);
         $cookieStore.put("user_data", $scope.userData.goals.weekGoals);
-        console.log($scope.userData.goals);
-        console.log($cookieStore.get('user_data'));
-//                $cookieStore.remove('user_data');
 
+        for (i = 0; i < weekGoals.length; i++) {
+            console.log("database");
+            console.log(weekGoals[i].id);
+            delete weekGoals[i]._id;
+            DbActionsService.update('weekGoals', weekGoals[i].id, weekGoals[i]).success(function(result) {
+       console.log(result.id);
+   });
+        }
     };
-
 ////////////////////////////////////
     // INITIALISE
     // DATES
@@ -43,8 +48,6 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
     $scope.months = dateService.getMonths();
     $scope.weeks = dateService.getWeeks();
     $scope.currentWeek = dateService.getWeek(new Date());
-
-
     // user
     $scope.userData = {};
     $scope.userData.goals = {};
@@ -52,11 +55,9 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
     // other
     $scope.totalCost = 0;
     $scope.actualCost = 0;
-
     // LOAD TASKS
     if ($cookieStore.get('current_user')) {
         console.log("-----USER: ", $cookieStore.get('current_user').email, "----");
-
         // TRY TO GET DATA FROM COOKIES
         if ($cookieStore.get('user_data')) {
             if ($cookieStore.get('user_data')) {
@@ -78,8 +79,7 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
         console.log("NO COOKIE CALLED CURRENT_USER");
     }
     ;
-    console.log($cookieStore.get('user_data'));
-
+//    console.log($cookieStore.get('user_data'));
     // END LOAD TASKS
     $scope.CurrentlyWorking = function() {
         // TO BE DEVELOPED
@@ -95,7 +95,6 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
 //            $scope.totalCost = 0;
 //        }
     };
-
     $scope.calculateTotalCostsActual = function() {
         // NOT WORKING
 //        if ($scope.actualCostsChk == true) {
@@ -112,8 +111,6 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
 //            $scope.actualCost = 0;
 //        }
     };
-
-
 // REMOVED FUNCTIONALIY 
 // WEEKGOAL.WEEK
 
@@ -125,10 +122,11 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
             return;
         }
         // ASSIGN LAST PROPERTIES
-        $scope.weekGoal.userId = $cookieStore.get('current_user').id;
-        DbActionsService.create('weekGoals', $scope.weekGoal).success(function(result) {
-            $scope.weekGoal = result;
+        DbActionsService.create('weekGoals', $scope.weekGoal).success(function(newRecord) {
+            console.log('creating new record');
+            $scope.weekGoal = newRecord;
             $scope.weekGoals.push($scope.weekGoal);
+            console.log($scope.weekGoals);
             //push to cookie
             $scope.updateCookie($scope.weekGoals, $scope.currentWeek);
 // ClOSE WINDOW
@@ -137,20 +135,25 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
     }; // end add week goal 
 
     $scope.updateWeekGoal = function(id) {
+        console.log("update");
+        console.log($scope.weekGoal);
         delete $scope.weekGoal._id;
-        DbActionsService.update('weekGoals', id, $scope.weekGoal).success
-                (function() {
+//        delete $scope.weekGoal.id;
+        DbActionsService.update('weekGoals', $scope.weekGoal.id, $scope.weekGoal).success
+                (function(updatedRecord) {
+                    console.log("updated", updatedRecord);
                     $scope.weekGoals = {};
+                    console.log("... retrieve existing records...");
                     DbActionsService.getAll('weekGoals').success(function(records) {
                         $scope.weekGoals = records;
-
+                        console.log("week goals");
+                        console.log($scope.weekGoals);
                         // UPDATE COOKIE
-                        $scope.updateCookie($scope.weekGoals, $scope.currentWeek);
+                                              $scope.updateCookie($scope.weekGoals, $scope.currentWeek);
                         // UPDATE COOKIE
                     });
                 });
         ngDialog.close();
-
     };
     $scope.deleteWeekGoal = function(id) {
         DbActionsService.delete('weekGoals', id).success
@@ -166,7 +169,6 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
                 });
         ngDialog.close();
     };
-
     /// END OF GOAL CRUD   
 
 
@@ -176,13 +178,12 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
         DbActionsService.getRecord1('weekGoals', id).success(function(records) {
             $scope.weekGoal = records;
             //       console.log("......");
-            console.log($scope.weekGoal);
+            console.log("Click: ", $scope.weekGoal);
             ngDialog.open({
                 template: 'templates/directives/weekGoal.html',
                 scope: $scope
             });
         });
-
     };
 //    console.log("scope");
     //  console.log($scope.weekGoal);
@@ -192,31 +193,26 @@ goalsModule.controller('goalsController', function($scope, dateService, $cookieS
         var date = new Date();
         $scope.weekGoal = {};
         // weekGoal
-    $scope.weekGoal = {
-        id: '',
-        userId: $cookieStore.get('current_user').id,
-        name: '',
-        award: '',
-        penalty:'',
-        week: date.getWeek(),
-        month: date.getMonth(),
-        year: date.getFullYear(),
-        active: false,
-        cost: 0,
-        description: '', 
-        responsible: 1,
-        done: false
-    };
-
+        $scope.weekGoal = {
+            id: '',
+            userId: $cookieStore.get('current_user').id,
+            name: '',
+            award: '',
+            penalty: '',
+            week: date.getWeek(),
+            month: date.getMonth(),
+            year: date.getFullYear(),
+            active: false,
+            cost: 0,
+            description: '',
+            responsible: 1,
+            done: false
+        };
         ngDialog.open({
             template: 'templates/directives/weekGoal.html',
             scope: $scope
         });
     };
-
-
-
-
     /* 
      * 
      * OLD CODE - TO BE DELETED

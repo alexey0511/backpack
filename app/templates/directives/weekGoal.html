@@ -7,7 +7,7 @@
                 <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal.userId">
             </div>  
             <div class="row" ng-readonly='false'> <span class="col-md-3" >ID: </span>
-                <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal._id.$oid" >
+                <input ng-readonly="true" class="col-md-6" type="text" ng-model="weekGoal.id" >
             </div>
             <div class="row"><span class="col-md-3">Name</span>
                 <input  class="col-md-6" type="text" ng-model="weekGoal.name" required>
@@ -52,10 +52,10 @@
                     <option value="1">other user</option>
                 </select>
             </div>
-            <button class="btn btn-warning" ng-show="weekGoal._id" ng-click="updateWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>Update</button>
 <!--            <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal()" > <i class="icon-plus"></i>Add</button>-->
-            <button class="btn btn-success" ng-hide="weekGoal._id" type="submit" > <i class="icon-plus"></i>Add</button>
-            <button class="btn btn-danger" ng-show="weekGoal._id" ng-click="deleteWeekGoal(weekGoal._id.$oid)" > <i class="icon-plus"></i>DELETE</button>
+            <button class="btn btn-success" ng-hide="weekGoal.id" type="submit" > <i class="icon-plus"></i>Add</button>
         </fieldset> 
     </form>
+            <button class="btn btn-warning" ng-show="weekGoal.id" ng-click="updateWeekGoal(weekGoal.id)" > <i class="icon-plus"></i>Update</button>
+            <button class="btn btn-danger" ng-show="weekGoal.id" ng-click="deleteWeekGoal(weekGoal.id)" > <i class="icon-plus"></i>DELETE</button>
 </div>

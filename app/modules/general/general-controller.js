@@ -9,7 +9,6 @@ var generalModule = angular.module('general-module', [
 generalModule.controller('loginController', function($scope, appConfig, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
 console.log("start");
 window.fbAsyncInit = function() {
-    alert("1");
     FB.init({
         appId: appConfig.fbId,
         cookie: true, // enable cookies to allow the server to access 
@@ -19,7 +18,7 @@ window.fbAsyncInit = function() {
     });
     };
     FB.init({
-        appId: appId,
+        appId: appConfig.fbId,
         cookie: true, // enable cookies to allow the server to access 
         // the session
         xfbml: true, // parse social plugins on this page
