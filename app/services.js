@@ -140,12 +140,12 @@ app.factory('DbActionsService', function($http, appConfig) {
     DbActionsService.update = function(table, id, attrs) {
 //       var attrs =  { "name" : "changed"};
         console.log("Attr: ", attrs);
+        console.log("ID: ", id);
         var url = appConfig.DbUrl + appConfig.DbPath + table + "/" +
                 id + '?apiKey=' + appConfig.DbId;
-        console.log("....");
+        console.log("...before send put request.");
         console.log(url);
         return  $http.put(url, attrs);
-
     };
     DbActionsService.getAll = function(table) {
         var url = appConfig.DbUrl + appConfig.DbPath + table + "?apiKey=" + appConfig.DbId;
