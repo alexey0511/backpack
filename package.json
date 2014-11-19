@@ -18,9 +18,9 @@
   "author": "alexey0511",
   "license": "myLicence",
   "bugs": {
-    "url": "https://github.com/alexey0511/test-app/issues"
+    "url": "https://github.com/alexey0511/backpack/issues"
   },
-  "homepage": "https://github.com/alexey0511/test-app",
+  "homepage": "https://github.com/alexey0511/backpack",
   "dependencies": {
     "express": "^4.7.2",
     "logfmt": "^1.1.2"
