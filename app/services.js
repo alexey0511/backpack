@@ -271,6 +271,7 @@ app.factory('FBService', function FBService($rootScope, appConfig, $window, Auth
     return {
         init: function (onAuthResponseChange, onStatusChange) {
             var deferred = $q.defer();
+            console.log("FB INIT", appConfig.fbId);
             $window.fbAsyncInit = function () {
                 // Executed when the SDK is loaded
                 FB.init({
