@@ -125,27 +125,11 @@ generalModule.controller('profileController', function ($scope, Session, LoginSe
 
         }
     };
-
-
-
-
 }); // end of controller
 
 
 // HOME PAGE CONTROLLER
 generalModule.controller('homeController', function ($scope) {
-//generalModule.controller('homeController', function($scope, ngProgress) {
-//    console.log(appConfig.appId);
-
-
-//    ngProgress.start();
-//// checking loading bar... delete after the test
-//    setTimeout(go, 1000);
-//    function go() {
-//        $(document).ready(function () {
-//            ngProgress.complete();
-//        });
-//    }
 
 }); // end of home page controller
 // LOADING PAGE CONTROLLER
@@ -154,15 +138,6 @@ generalModule.controller('loadingController', function ($scope, $location, Appli
         $location.path("/home");
 //                     $location.path('/goals');
    });
-//generalModule.controller('loadingController', function ($scope, $location, ngProgress) {
-//// checking loading bar... delete after the test
-//    setTimeout(go, 1000);
-//    function go() {
-//        $(document).ready(function () {
-//            ngProgress.complete();
-//            $location.path("/login");
-//        });
-//    }
 }); // end of loading page controller
 
 
