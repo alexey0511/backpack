@@ -15,5 +15,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-   res.sendfile('./app/index1.html')
+   res.sendfile('index1.html')
  });
