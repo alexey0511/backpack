@@ -1,0 +1,96 @@
+<div ng-cloak>
+    <!--                        HEADER-->
+    <custom-header></custom-header>
+    <!--HEADER                        -->
+    <div class='container-fluid' >
+        <div class="row">
+            <!--NAVIGATION-->
+            <div class="col-md-2">
+                <custom-navigation></custom-navigation>
+            </div>
+            <task-list class="col-md-5" source="yearGoals" type="year"></task-list>
+
+            <div class="col-md-5" id="stask" ng-show="ui.task">
+                <style>
+                    form .ng-invalid.ng-dirty {background-color: lightpink;}
+                    form .ng-valid.ng-dirty {background-color: lightgreen; }
+                    span.summary.ng-invalid {color: red; font-weight: bold}
+                    span.summary.ng-valid {color:green; }
+                    div.error {color:red; font-weight:bold; margin-left: 100px;}
+                    form {background-color: silver; margin-left: 20px;}
+                    
+                </style>
+                <form class="horisontal" ng-submit="editTask()" name="goalForm">
+                    <fieldset>
+                        <h1> Task for a {{task.type}}</h1>
+                        <div class="row"> <span class="col-md-3">type</span>
+                            <input ng-readonly="true" class="col-md-6" type="text" ng-model="task.type">
+                        </div>  
+                        <div class="row"> <span class="col-md-3">user</span>
+                            <input ng-readonly="true" class="col-md-6" type="text" ng-model="task.userId">
+                        </div>  
+                        <div class="row" ng-readonly='false'> <span class="col-md-3" >ID: </span>
+                            <input ng-readonly="true" class="col-md-6" type="text" ng-model="task.id" >
+                        </div>
+                        <div class="row"><span class="col-md-3">Name</span>
+                            <input  class="col-md-6" type="text" ng-model="task.name" name="Name" required>
+                        </div>
+                        <div class="error row" ng-show="goalForm.Name.$error.required && goalForm.Name.$dirty">
+                            <span>Please enter a value</span>
+                        </div>
+
+                        <div class="row"> <span class="col-md-3">Award</span>
+                            <input class="col-md-6" type="text" ng-model="task.award" required>
+                        </div>
+                        <div class="row"> <span class="col-md-3">Penalty</span>
+                            <input class="col-md-6" type="text" ng-model="task.penalty">
+                        </div>
+                        <div class="row"> <span class="col-md-3">Week</span>
+
+                            <select ng-model="task.week" ng-options="week as week for week in weeks" class="col-md-6">
+                                <option>46</option>
+                            </select>
+                        </div>
+                        <div class="row"> <span class="col-md-3">Month</span>
+                            <select ng-model="task.month" ng-options="month.id as month.value for month in months" class="col-md-6">
+                                <option>---</option>
+                            </select>
+                        </div >
+                        <div class="row"> <span class="col-md-3">year</span>
+                            <select ng-model="task.year"  ng-options="year as year for year in years" class="col-md-6" >
+                                <option>---</option>
+                            </select>
+                        </div>
+                        <div class="row"> <span class="col-md-3">Working</span>
+                            <input type="checkbox" ng-model="task.active" class='col-md-1'>
+                        </div>
+                        <div class="row"> <span class="col-md-3">Cost</span>
+                            <input type='number' class="col-md-6" min="0" max='50' ng-model='task.cost' required />
+                        </div>
+                        <div class="row"> <span class="col-md-3">Completed</span>
+                            <input type="checkbox" ng-model="task.done" class='col-md-1'>
+                        </div>
+                        <div class="row" > <span class="col-md-3">Description</span>
+                            <textarea class="col-md-6" type="textarea" ng-model="task.description" ></textarea>
+                        </div>
+                        <div class="row"> <span class="col-md-3">Verify result</span>
+                            <select class="col-md-6">
+                                <option value="1">me</option>
+                                <option value="1">other user...</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" ng-disabled="goalForm.$invalid">Update</button>
+                        <div class="well">
+                            Message: {{message}}
+                            <div> Valid: <span class="summary" ng-class=""goalForm.$valid ? 'ng-valid' : 'ng-invalid'">
+                                               {{goalForm.$valid}}
+                            </span>
+                        </div>
+                </fieldset> 
+            </form>
+            <button  class="btn btn-danger btn-block" ng-click="deleteTask()">Delete</button>
+
+        </div>
+    </div>
+</div>
+</div>

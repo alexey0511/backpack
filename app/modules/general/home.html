@@ -1,9 +1,43 @@
-<div id='home' >
-    <h1>This is a home page</h1>
-News FEED
-    <ul>
-        <li>News 1</li>
-        <li>News 2</li>
-        <li>News 3</li>
-    </ul>
+<div ng-cloak>
+    <!--                        HEADER-->
+    <custom-header></custom-header>
+    <!--HEADER                        -->
+    <div class="row">
+        <!--NAVIGATION-->
+        <custom-navigation></custom-navigation>
+
+        <div id='main' class="col-md-9" style='border: 1px red outset'>
+            <div class="row">
+                <div class="col-md-3">
+                    <h1>TOP 10 USERS</h1>
+                    <table class='table table-striped'>
+                        <thead><tr><th>User</th><th>Score</th></tr></thead>
+                        <tbody>
+                            <tr ng-repeat='score in scores'>
+                                <td>{{score.name}}</td>
+                                <td>{{score.score}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h1>Quick links</h1>
+                    <ul>
+                        <li><a href=#>Guidelines</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Activities</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h1>        News FEED</h1>
+                    <div style="margin-bottom: 50px;">
+                        <ul ng-repeat="new in news" >
+                            <li>{{new .title}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-include="'/modules/general/layout_after.html'"></div>
+    </div>
 </div>

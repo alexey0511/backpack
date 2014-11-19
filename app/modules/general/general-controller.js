@@ -1,117 +1,76 @@
 var generalModule = angular.module('general-module', [
-    'ngResource',
-    'ngRoute'
+//    'ngResource',
+    'ngRoute',
+    'ngAnimate',
+    'directives'
 ]);
 
+generalModule.directive('facebookComments', function () {
+    function createHTML(href, numposts, colorscheme) {
+        return '<div class="fb-comments" ' +
+                       'data-href="' + href + '" ' +
+                       'data-numposts="' + numposts + '" ' +
+                       'data-colorsheme="' + colorscheme + '">' +
+               '</div>';
+    }
 
+    return {
+        restrict: 'A',
+        scope: {},
+        link: function postLink(scope, elem, attrs) {
+            attrs.$observe('pageHref', function (newValue) {
+                var href        = newValue;
+                var numposts    = attrs.numposts    || 5;
+                var colorscheme = attrs.colorscheme || 'light';
+
+                elem.html(createHTML(href, numposts, colorscheme));
+                FB.XFBML.parse(elem[0]);
+            });
+        }
+    };
+}),
+generalModule.directive('facebookLike', ['$timeout', function ($timeout) {
+    return {
+        template:
+            '<div class="fb-like" ' +
+                'data-href="" ' +
+                'data-send="false" ' +
+                'data-layout="button_count" ' +
+                'data-width="450" ' +
+                'data-show-faces="false"></div>',
+        link: function (scope, element, attributes) {
+            $timeout(function () {
+                return typeof FB !== "undefined" && FB !== null
+                    ? FB.XFBML.parse(element.parent()[0])
+                    : void 0; });
+            }
+    };
+ }]),
 
 // LOGIN PAGE CONTROLLER
-generalModule.controller('loginController', function($scope, appConfig, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
-console.log("start");
-window.fbAsyncInit = function() {
-    FB.init({
-        appId: appConfig.fbId,
-        cookie: true, // enable cookies to allow the server to access 
-        // the session
-        xfbml: true, // parse social plugins on this page
-        version: 'v2.0' // use version 2.0
-    });
-    };
-    FB.init({
-        appId: appConfig.fbId,
-        cookie: true, // enable cookies to allow the server to access 
-        // the session
-        xfbml: true, // parse social plugins on this page
-        version: 'v2.0' // use version 2.0
-    });
-    
-    $scope.user = {};
-    $scope.user.first_name = "stranger";
-    FB.getLoginStatus(function(response) {
-        console.log(response);
-    });
-    FB.api("/me", function(response) {
-        console.log(response);
-        document.getElementById('status').className = "alert alert-success";
-        $scope.user.first_name = response.first_name;
-    });
+ generalModule.controller("tcCtrl", function ($scope, $location)
+ {
+     $scope.confirm = function() {
+         $location.path("/goals");
+     }
+     
+     
+ });
+generalModule.controller('loginController', function ($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
 
-    $scope.credentials = {
-        username: '',
-        password: ''
-    };
-    $rootScope.user = {
-        username: '',
-        password: '',
-        role: ''
-    };
-
-    $scope.facebookLogin = function()
-    {
-        FB.login(function(response) {
-            if (response.status === 'connected') {
-                FB.api('/me', function(response) {
-                    $scope.credentials = response;
-                    console.log("User", $scope.credentials);
-                    $scope.credentials.username = $scope.credentials.id;
-                    console.log("USERNAME", $scope.credentials.username);
-                    userService.getUser($scope.credentials).then(function(user) {
-                        if (user.data.length === 1) {
-                            console.log(".......1 user found.....");
-                            // success - create session and redirect
-                            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-                            console.log(AUTH_EVENTS.loginSuccess);
-                            $scope.user = user.data[0];
-                            Session.create("1", $scope.user.username, $scope.user.role, $scope.user.score);
-                            $scope.getAuthentication();
-                            $cookieStore.put('current_user', $scope.user);
-
-                            console.log("user cook:", $cookieStore.get('current_user'));
-                            document.getElementById('status').className = "alert alert-success";
-                        } else if (user.data.length === 0) {
-                            $scope.credentials.role = "user";
-                            $scope.credentials.score = "1001";
-                            console.log(".......no users found.....");
-                            userService.create($scope.credentials);
-                            document.getElementById('status').className = "alert alert-success";
-                        } else {
-                            // too many users return 
-                            Session.destroy();
-                            $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-                            console.log(AUTH_EVENTS.loginFailed);
-                            return;
-                        }
-                    });  // end of call to login service
-
-                });
-            } else if (response.status === 'not_authorized') {
-                // The person is logged into Facebook, but not your app.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                        'into this app.';
-                document.getElementById('status').className = "alert alert-warning";
-            } else {
-                // The person is not logged into Facebook, so we're not sure if
-                // they are logged into this app or not.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                        'into Facebook.';
-                document.getElementById('status').className = "alert alert-danger";
-            }
-        }, {scope: 'public_profile,email'});
-    };
-
-    $scope.getAuthentication = function() {
+    $rootScope.getAuthentication = function () {
         if (Session.userId !== '') {
-            $scope.user.userId = Session.userId;
-            $scope.isAuthenticated = LoginService.isAuthenticated(Session);
+            $rootScope.user.userId = Session.userId;
+            $rootScope.isAuthenticated = LoginService.isAuthenticated(Session);
         }
-        return $scope.isAuthenticated;
+        return $rootScope.isAuthenticated;
     };
-    $scope.signOut = function() {
+    $rootScope.signOut = function () {
         Session.destroy();
-        $scope.getAuthentication();
+        $rootScope.getAuthentication();
     };
 
-    $scope.setCurrentUser = function(user) {
+    $rootScope.setCurrentUser = function (user) {
         alert(user.username);
     };
 
@@ -121,22 +80,38 @@ window.fbAsyncInit = function() {
 ///
 
 // Profile PAGE CONTROLLER
-generalModule.controller('profileController', function($scope, Session, LoginService) {
+generalModule.controller('profileController', function ($scope, Session, LoginService) {
 
+    $scope.sendChallenge = function (to, message) {
+        
+        //FB.login(callback, {scope: 'user_friends'});
+
+        var options = {
+            method: 'apprequests'
+        };
+        if (to)
+            options.to = to;
+        if (message)
+            options.message = message;
+        FB.ui(options, function (response) {
+    console.log('sendChallenge',response);        });
+    };
+    
+    
     $scope.userId = 'empty username';
-    $scope.getUserId = function() {
+    $scope.getUserId = function () {
         $scope.userId = Session.userId;
-        $scope.credentials.username = $scope.userId;
+        $scope.user.username = $scope.userId;
         $scope.user = {};
         return $scope.userId;
     };
 
 
-    $scope.getUser = function() {
+    $scope.getUser = function () {
         if (typeof ($scope.getUserId) === "undefined") {
             return;
         } else {
-            LoginService.login($scope.credentials).then(function(responseUser) {
+            LoginService.login($scope.user).then(function (responseUser) {
 //            console.log(user);
                 if (responseUser.data.length === 1) {
 
@@ -158,34 +133,36 @@ generalModule.controller('profileController', function($scope, Session, LoginSer
 
 
 // HOME PAGE CONTROLLER
-generalModule.controller('homeController', function($scope, ngProgress, $facebook) {
+generalModule.controller('homeController', function ($scope) {
 //generalModule.controller('homeController', function($scope, ngProgress) {
-    console.log("...debug....");
 //    console.log(appConfig.appId);
 
-//    $facebookProvider.setAppId("appConfig.appId");
 
-    ngProgress.start();
-// checking loading bar... delete after the test
-    setTimeout(go, 1000);
-    function go() {
-        $(document).ready(function() {
-            ngProgress.complete();
-        });
-    }
+//    ngProgress.start();
+//// checking loading bar... delete after the test
+//    setTimeout(go, 1000);
+//    function go() {
+//        $(document).ready(function () {
+//            ngProgress.complete();
+//        });
+//    }
 
 }); // end of home page controller
 // LOADING PAGE CONTROLLER
-generalModule.controller('loadingController', function($scope, $location, ngProgress) {
-    ngProgress.start();
-// checking loading bar... delete after the test
-    setTimeout(go, 1000);
-    function go() {
-        $(document).ready(function() {
-            ngProgress.complete();
-            $location.path("/login");
-        });
-    }
+generalModule.controller('loadingController', function ($scope, $location, Application) {
+    Application.registerListener(function () {
+        $location.path("/home");
+//                     $location.path('/goals');
+   });
+//generalModule.controller('loadingController', function ($scope, $location, ngProgress) {
+//// checking loading bar... delete after the test
+//    setTimeout(go, 1000);
+//    function go() {
+//        $(document).ready(function () {
+//            ngProgress.complete();
+//            $location.path("/login");
+//        });
+//    }
 }); // end of loading page controller
 
 
