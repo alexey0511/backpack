@@ -1,0 +1,55 @@
+
+<div class="container-fluid" >
+    <form class="horisontal" ng-submit="addMonthGoal()">
+        <fieldset>
+            <h1> Task for a month</h1>
+            <div class="row"> <span class="col-md-3">user</span>
+                <input ng-readonly="true" class="col-md-6" type="text" ng-model="monthGoal.userId">
+            </div>  
+            <div class="row" ng-readonly='false'> <span class="col-md-3" >ID: </span>
+                <input ng-readonly="true" class="col-md-6" type="text" ng-model="monthGoal.id" >
+            </div>
+            <div class="row"><span class="col-md-3">Name</span>
+                <input  class="col-md-6" type="text" ng-model="monthGoal.name" required>
+            </div>
+            <div class="row"> <span class="col-md-3">Award</span>
+                <input class="col-md-6" type="text" ng-model="monthGoal.reward" required>
+            </div>
+            <div class="row"> <span class="col-md-3">Penalty</span>
+                <input class="col-md-6" type="text" ng-model="monthGoal.penalty">
+            </div>
+            <div class="row"> <span class="col-md-3">Month</span>
+                <select ng-model="monthGoal.month" ng-options="month.id as month.value for month in months" class="col-md-6">
+                    <option>---</option>
+                </select>
+            </div >
+            <div class="row"> <span class="col-md-3">year</span>
+                <select ng-model="monthGoal.year" ng-options="year for year in years" class="col-md-6" >
+                    <option>---</option>
+                </select>
+            </div>
+            <div class="row"> <span class="col-md-3">Working</span>
+                <input type="checkbox" ng-model="monthGoal.active" class='col-md-1'>
+            </div>
+            <div class="row"> <span class="col-md-3">Cost</span>
+                <input type='number' class="col-md-6" min="0" max='50' ng-model='monthGoal.cost' required />
+            </div>
+            <div class="row"> <span class="col-md-3">Completed</span>
+                <input type="checkbox" ng-model="monthGoal.done" class='col-md-1'>
+            </div>
+            <div class="row" > <span class="col-md-3">Description</span>
+                <textarea class="col-md-6" type="textarea" ng-model="monthGoal.description" ></textarea>
+            </div>
+            <div class="row"> <span class="col-md-3">Verify result</span>
+                <select class="col-md-6">
+                    <option value="1">me</option>
+                    <option value="1">other user...</option>
+                </select>
+            </div>
+<!--            <button class="btn btn-success" ng-hide="weekGoal._id" ng-click="addWeekGoal()" > <i class="icon-plus"></i>Add</button>-->
+            <button class="btn btn-success" ng-hide="monthGoal.id" type="submit" > <i class="icon-plus"></i>Add</button>
+        </fieldset> 
+    </form>
+            <button class="btn btn-warning" ng-show="monthGoal.id" ng-click="updateWeekGoal(monthGoal.id)" > <i class="icon-plus"></i>Update</button>
+            <button class="btn btn-danger" ng-show="monthGoal.id" ng-click="deleteWeekGoal(monthGoal.id)" > <i class="icon-plus"></i>DELETE</button>
+</div>
