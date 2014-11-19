@@ -1,0 +1,29 @@
+[
+    {
+        "id": "542caa64e4b0e36a72be63a9",
+        "type": "year",
+        "userId": "928771773805240",
+        "name": "year task 1",
+        "award": "10",
+        "penalty": "20",
+        "year": 2014,
+        "active": false,
+        "cost": 1,
+        "description": "",
+        "responsible": 1,
+        "done": true
+    },
+    {
+        "id": "542caa64e4b0e36a72be63a4",
+        "type": "year",
+        "userId": "928771773805240",
+        "name": "year task 2",
+        "award": "10",
+        "penalty": "20",
+        "year": 2014,
+        "active": false,
+        "cost": 1,
+        "description": "",
+        "responsible": 1,
+        "done": true
+    }]

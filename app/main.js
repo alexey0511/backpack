@@ -163,7 +163,6 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
     {
         $location.path('/loading');
     }
-
     $scope.fblogin = function () {
         FBService.login(function (response) {
 //            $location.path('/home');
@@ -171,7 +170,7 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
         });
         console.log("login (inside controller)");
     }
-       
+
     RouteFilter.run($location.path());
     // FACEBOOK INIT ACTIVATE FOR PROD...
     console.log("1. Initializing Facebook...");
