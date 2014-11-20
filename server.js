@@ -6,7 +6,7 @@ app.use(express.static(''));
 app.listen(process.env.PORT || 5000);
 
 app.get('/', function(req, res) {
-   res.sendfile('./index1.html');
+   res.sendfile('./app/index1.html');
 });
 
 var port = Number(process.env.PORT || 5000);
@@ -15,5 +15,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-   res.sendfile('./index1.html');
+   res.sendfile('./app/index1.html');
  });
