@@ -1,9 +1,17 @@
-var express = require("express");
+var express = require('express')
 var logfmt = require("logfmt");
 var app = express();
-app.use(logfmt.requestLogger());
-app.use(express.static('../app'));
+
 app.listen(process.env.PORT);
+
+app.use(logfmt.requestLogger());
+
+app.set('port', (process.env.PORT || 5000))
+
+app.get('/', function(request, response) {
+  response.send(cool());
+});
+
 
 app.get('/', function(req, res) {
   res.send('Hello World! PORT: ' +process.env.PORT);
