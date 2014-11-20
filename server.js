@@ -1,17 +1,9 @@
-var express = require('express')
+var express = require("express");
 var logfmt = require("logfmt");
 var app = express();
-
-app.listen(process.env.PORT);
-
 app.use(logfmt.requestLogger());
-
-app.set('port', (process.env.PORT || 5000))
-
-app.get('/', function(request, response) {
-  response.send(cool());
-});
-
+app.use(express.static('../'));
+app.listen(process.env.PORT);
 
 app.get('/', function(req, res) {
   res.send('Hello World! PORT: ' +process.env.PORT);
@@ -23,5 +15,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-   res.sendfile('./index1.html')
+   res.sendfile('./app/index1.html');
  });
