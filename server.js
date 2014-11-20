@@ -2,11 +2,7 @@ var express = require("express");
 var logfmt = require("logfmt");
 var app = express();
 app.use(logfmt.requestLogger());
-<<<<<<< HEAD
-app.use(express.static(''));
-=======
 app.use(express.static('../'));
->>>>>>> 222276fc8bf5baa4bb4a3e162e9821885961bf68
 app.listen(process.env.PORT);
 
 app.get('/', function(req, res) {
@@ -19,9 +15,5 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
-<<<<<<< HEAD
    res.sendfile('app/index1.html')
-=======
-   res.sendfile('./app/index.html');
->>>>>>> 2abe7136882aa2e4f7b72734e490f539b198349a
  });
