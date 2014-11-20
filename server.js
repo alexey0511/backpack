@@ -2,7 +2,11 @@ var express = require("express");
 var logfmt = require("logfmt");
 var app = express();
 app.use(logfmt.requestLogger());
+<<<<<<< HEAD
 app.use(express.static(''));
+=======
+app.use(express.static('../'));
+>>>>>>> 222276fc8bf5baa4bb4a3e162e9821885961bf68
 app.listen(process.env.PORT);
 
 app.get('/', function(req, res) {
