@@ -5,6 +5,10 @@ app.use(logfmt.requestLogger());
 app.use(express.static('../'));
 app.listen(process.env.PORT);
 
+app.get('/', function(req, res) {
+   res.sendfile('app/index.html')
+
+});
 
 
  app.post('/*', function(req, res){
