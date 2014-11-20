@@ -6,7 +6,7 @@ app.use('app/', express.static('../'));
 app.listen(process.env.PORT || 5000);
 
 app.get('/', function(req, res) {
-   res.sendfile('app/index.html')
+//   res.sendfile('app/index.html')
 
 });
 
