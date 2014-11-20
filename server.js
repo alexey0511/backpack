@@ -19,5 +19,9 @@ app.listen(port, function() {
 });
 
  app.post('/*', function(req, res){
+<<<<<<< HEAD
    res.sendfile('app/index1.html')
+=======
+   res.sendfile('./app/index.html');
+>>>>>>> 2abe7136882aa2e4f7b72734e490f539b198349a
  });
