@@ -9,10 +9,6 @@ app.get('/', function(req, res) {
   res.send('Hello World! PORT: ' +process.env.PORT);
 });
 
-var port = Number(process.env.PORT || 5004);
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});
 
  app.post('/*', function(req, res){
    res.sendfile('app/index1.html')
