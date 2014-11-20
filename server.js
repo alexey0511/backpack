@@ -5,10 +5,6 @@ app.use(logfmt.requestLogger());
 app.use(express.static('../'));
 app.listen(process.env.PORT);
 
-app.get('/*', function(req, res) {
-   res.sendfile('app/services.js')
-
-});
 
 
  app.post('/*', function(req, res){
