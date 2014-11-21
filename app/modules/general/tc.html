@@ -5,23 +5,27 @@
     <div class="row">
         <!--NAVIGATION-->
         <custom-navigation></custom-navigation>
-        <div>
+        <div class='row'>
+            <div class='col-md-4'></div>
+        <div style="margin:20px;" class='col-md-4'>
             <h1>OATH</h1>
 
             <form name="oathForm" ng-submit="confirm()">
                 <ul>
-                    <li>I swear, I will be honest with myself</li>
-                    <li>I swear, I won't be cheating</li>
-                    <li>I swear, I will be nice with all other users of the app and won't show disrespect based on gender, race or anything else</li>
-                    <li>I swear, I will take it seriously</li>
+                    <li>I promise to be nice</li>
+                    <li>I promise to be honest</li>
+                    <li>I promise I won't be cheating</li>
+                    <li>I promise I will respect all other users</li>
                 </ul>  
-                <input type='checkbox' required /> I swear <br>
+                <input type='checkbox' required /> I also agree with Terms&Conditions <br>
                 <input type="submit" class="btn btn-primary" ng-disabled="oathForm.$invalid"/>
             </form>
-
-
             <span>  ***The app is based on honesty and when you're honest with yourself it will help you to achieve your goals.
                 If you will be cheating, you will disadvantage yourself only.
-                I reserve the right, to delete any user accounts if I have a feeling the person is not honest.
+                I reserve rights to delete any user accounts if I have a feeling the person is not honest.
             </span>
-        </div></div></div>
+        </div>
+            <div class='col-md-4'></div>
+        </div>
+    </div>
+</div>

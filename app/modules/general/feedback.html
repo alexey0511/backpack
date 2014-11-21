@@ -18,9 +18,9 @@
                 <tr ng-repeat="suggestion in suggestions">
                     <td>{{$index}}</td>
                     <td>
-            <facebook-like
-                 data-href="https://local.host.com/#/feedback/{{suggestion._id.$oid}}">
-            </facebook-like>
+            <div id="facebook-like" facebook-like
+                 page-href="https://local.host.com/#/feedback/{{suggestion._id.$oid}}">
+            </div>
                     </td>
                     <td>{{suggestion.title}}</td>
                     <td>{{suggestion.description}}</td>
@@ -30,9 +30,6 @@
 
         <div>
             <span> <h1>       Leave your suggestions and comments below</h1></span>
-            <div id="facebook-like" facebook-like
-                 data-href="https://local.host.com/#/feedback">
-            </div>
             <div id="facebook-comments" facebook-comments
                  page-href="https://local.host.com/#/feedback"
                  numposts="10"

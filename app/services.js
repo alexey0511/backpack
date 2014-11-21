@@ -1,3 +1,48 @@
+app.factory('dataService', function ($rootScope, goalsService) {
+    return {
+        getScores: function () {
+            goalsService.getScores().success(function (data) {
+//                console.log("SCORES: ", data);
+                $rootScope.scores = data;
+            })
+                    .error(function () {
+                        $rootScope.message = "Can't display user scores";
+                        console.log("can't display user scores");
+                    });
+        },
+        getActivities: function () {
+            goalsService.getActivities().success(function (data) {
+//                console.log("Activities: ", data);
+                $rootScope.activities = data;
+            })
+                    .error(function () {
+                        $rootScope.message = "Can't display news";
+                        console.log("can't display user news");
+                    });
+        },
+        getNews: function () {
+            goalsService.getNews().success(function (data) {
+//                console.log("News: ", data);
+                $rootScope.news = data;
+            })
+                    .error(function () {
+                        $rootScope.message = "Can't display news";
+                        console.log("can't display user news");
+                    });
+        },
+        getSuggestions: function () {
+            goalsService.getSuggestions().success(function (suggestions) {
+                //               console.log("Suggestions: ", suggestions);
+                $rootScope.suggestions = suggestions;
+            })
+                    .error(function () {
+                        $rootScope.message = "Can't display news";
+                        console.log("can't display user news");
+                    });
+        }
+    };
+});
+
 app.factory('lsService', function lsService($rootScope) {
     return {
         saveGoals: function () {
@@ -14,12 +59,48 @@ app.factory('lsService', function lsService($rootScope) {
                 console.log("no local storage support");
             }
         },
+        deleteGoals: function () {
+            localStorage.removeItem('goals');
+        },
         getGoals: function () {
             if (typeof (Storage) !== "undefined") {
                 return JSON.parse(localStorage.getItem('goals'));
             } else {
                 console.log("no local storage support");
             }
+        }
+    };
+});
+app.factory('sessionService', function sessionService($rootScope) {
+    return {
+        saveSession: function () {
+            if (typeof (Storage) !== "undefined") {
+                if ($rootScope.session) {
+                    var session = {};
+                    session = $rootScope.session;
+                    // delete session 20 seconds before it expires in facebook 
+                    var sessionDeleteTime = (session.authResponse.expiresIn - 20) * 1000;
+                    sessionStorage.setItem('session', JSON.stringify(session));
+                    setTimeout(function () {
+                        sessionStorage.removeItem('session');
+                    }, sessionDeleteTime);
+                } else {
+                    console.log("rootScope empty");
+                }
+            } else {
+                console.log("no session storage support");
+            }
+        },
+        getSession: function () {
+            if (typeof (Storage) !== "undefined") {
+
+                return JSON.parse(sessionStorage.getItem('session'));
+            } else {
+                console.log("no session storage support");
+            }
+        },
+        deleteSession: function () {
+            sessionStorage.removeItem('session');
         }
     };
 });
@@ -44,29 +125,33 @@ app.factory('goalsService', function goalsService($rootScope, $http, appConfig) 
                 console.log("rootScope empty");
             }
         },
+        deleteGoals: function (id) {
+            var url = "https://api.mongolab.com/api/1/databases/better-you/collections/goals" + id + "?apiKey=" + appConfig.DbId;
+            $http.delete(url);
+        },
         getGoals: function () {
             var url = appConfig.DbUrl + appConfig.DbPath + "goals/" + $rootScope.user.id + "?apiKey=" + appConfig.DbId;
             return $http.get(url);
         },
-        getScores: function() {
+        getScores: function () {
             var url = appConfig.DbUrl + appConfig.DbPath + "users?f={'name':1, 'score':1}&s={'score':-1}&apiKey=" + appConfig.DbId;
             return $http.get(url);
         },
-        getNews: function() {
+        getNews: function () {
             var url = appConfig.DbUrl + appConfig.DbPath + "news?f={'title':1, 'details':1}&s={'date':1}&apiKey=" + appConfig.DbId;
             return $http.get(url);
         },
-        getSuggestions: function() {
+        getSuggestions: function () {
             var url = appConfig.DbUrl + appConfig.DbPath + "suggestions?f={'title':1, 'description':1}&s={'date':1}&apiKey=" + appConfig.DbId;
             return $http.get(url);
         },
-        getActivities: function() {
+        getActivities: function () {
             var url = appConfig.DbUrl + appConfig.DbPath + "activities?f={'title':1, }&s={'timestamp':1}&apiKey=" + appConfig.DbId;
             return $http.get(url);
         }
     };
 });
-app.factory('idService', function ($rootScope, $cookieStore) {
+app.factory('idService', function ($cookieStore) {
     var idService = {};
     idService.generate = function () {
         var last_id;
@@ -273,13 +358,11 @@ app.factory('dateService', function () {
     };
     return ds;
 });
-// FACEBOOK
-app.factory('FBService', function FBService($rootScope, appConfig, $window, AuthenticationService, $q) {
+app.factory('FBService', function FBService($rootScope, appConfig, $window, $q) {
     var FBService = {};
     return {
         init: function (onAuthResponseChange, onStatusChange) {
             var deferred = $q.defer();
-            console.log("FB INIT", appConfig.fbId);
             $window.fbAsyncInit = function () {
                 // Executed when the SDK is loaded
                 FB.init({
@@ -346,11 +429,6 @@ app.factory('FBService', function FBService($rootScope, appConfig, $window, Auth
             });
             return deferred.promise;
         },
-        renderWelcome: function () {
-            var welcome = $('#welcome');
-            welcome.find('.first_name').html($rootScope.user.first_name);
-            welcome.find('.profile').attr('src', $rootScope.user.picture.data.url);
-        },
         getFriends: function (callback) {
             FB.api('/me/friends', {fields: 'id,name,first_name,picture.width(120).height(120)'}, function (response) {
                 if (!response.error) {
@@ -390,27 +468,7 @@ app.factory('FBService', function FBService($rootScope, appConfig, $window, Auth
         }
     };
 });
-// SESSION
-
-app.factory('Session', function () {
-    this.create = function (accessToken, expiresIn, signedRequest, userID, status) {
-        this.id = accessToken;
-        this.expiresIn = expiresIn;
-        this.signedRequest = signedRequest;
-        this.userID = userID;
-        this.status = status;
-    };
-    this.destroy = function () {
-        this.id = null;
-        this.expiresIn = null;
-        this.signedRequest = null;
-        this.userID = null;
-        this.status = null;
-    };
-    return this;
-});
-// USER SERVICE
-app.factory('userService', function ($http, appConfig) {
+app.factory('userService', function ($http, appConfig, $rootScope) {
     var userService = {};
     var userId = null;
     userService.getUser = function (userId) {
@@ -419,7 +477,6 @@ app.factory('userService', function ($http, appConfig) {
         return $http.get(url);
     };
     userService.create = function (user) {
-        ////
         var url = 'https://api.mongolab.com/api/1/databases/better-you/collections/users?apiKey=' + appConfig.DbId;
         return  $http.post(url, user);
     };
@@ -437,225 +494,25 @@ app.factory('userService', function ($http, appConfig) {
             alert(status);
         });
     };
+    userService.exists = function () {
+        if (Object.getOwnPropertyNames($rootScope.user).length === 0 ||
+                //  !$rootScope.user.hasOwnProperty("role") ||
+                $rootScope.user.role === "guest") {
+            return false;
+        } else {
+            return true;
+        }
+    };
+    userService.isAdmin = function ()
+    {
+        if ($rootScope.user.hasOwnProperty("role")) {
+            return this.exists() && $rootScope.user.role === 'admin';
+        } else {
+            return false;
+        }
+    };
     return userService;
 }); // end of user service
-
-
-// Database Actions SERVICE
-app.factory('DbActionsService', function ($http, appConfig) {
-    var DbActionsService = {};
-    DbActionsService.getRecord = function (table, query) {
-        var url = appConfig.DbUrl + appConfig.DbPath + table +
-                '?q=' + query + '&apiKey=' + appConfig.DbId;
-        return $http.get(url);
-    };
-    DbActionsService.create = function (table, record) {
-        if (record.hasOwnProperty("_id")) {
-            console.log("!!!Attention. trying to create new record from existing record");
-        } else {
-            var url = appConfig.DbUrl + appConfig.DbPath + table + '?apiKey=' + appConfig.DbId;
-            return $http.post(url, record);
-        }
-    };
-    DbActionsService.delete = function (table, id) {
-        if (typeof (id) !== 'undefined') {
-            var url = appConfig.DbUrl + appConfig.DbPath + table + "/" + id + "?apiKey=" + appConfig.DbId;
-            return  $http.delete(url);
-        }
-    };
-    DbActionsService.update = function (table, id, attrs) {
-        if (typeof (id) !== 'undefined' && !attrs.hasOwnProperty('_id')) {
-            var url = appConfig.DbUrl + appConfig.DbPath + table + "/" +
-                    id + '?apiKey=' + appConfig.DbId;
-            return  $http.put(url, attrs);
-        } else {
-            console.log("!!!Attention. Wrong parameters on update operation");
-            console.log("ID: ", id);
-            console.log("Attrs: ", attrs);
-            return "error";
-        }
-    };
-    DbActionsService.getAll = function (table) {
-        var url = appConfig.DbUrl + appConfig.DbPath + table + "?apiKey=" + appConfig.DbId;
-        return $http.get(url);
-    };
-    DbActionsService.getRecord1 = function (table, id) {
-        var url = appConfig.DbUrl + appConfig.DbPath + table + "/" + id + "?apiKey=" + appConfig.DbId;
-        return $http.get(url);
-    };
-    return DbActionsService;
-});
-//// end of WEEK GOAL SERVICE
-// LOGIN
-app.factory('LoginService', function ($http, Session) {
-    var loginService = {};
-    loginService.getUser = function (username) {
-        if (username !== 'undefined') {
-            var url = 'https://api.mongolab.com/api/1/databases/better-you/collections/users?q={"username": "' + username +
-                    '"}&apiKey=Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo';
-            return $http.get(url);
-        }
-    };
-    loginService.createUser = function (resource) {
-
-        var userNew = function ($resource) {
-            var userNew1 = $resource('https://api.mongolab.com/api/1/databases/' +
-                    '/better-you/collections/users/:id',
-                    {apiKey: 'Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo'}, {
-                id: '@_id.$oid'
-            });
-            return userNew1;
-        };
-        return userNew;
-    };
-    loginService.login = function (user) {
-        var url = 'https://api.mongolab.com/api/1/databases/better-you/collections/users?q={"username": "' + user.username +
-                '"}&apiKey=Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo';
-        return $http.get(url);
-    };
-    loginService.isAuthenticated = function () {
-        if (Session.userId) {
-//    console.log(Session);
-        } else {
-//    console.log("not signed");
-        }
-        return !!Session.userId;
-    };
-    loginService.isAuthorized = function (authorizedRoles) {
-//        if (!app.isArray(authorizedRoles)) {
-//            authorizedRoles = [authorizedRoles];
-//        }
-//        return (authService.isAuthenticated() &&
-//                authorizedRoles.indexOf(Session.userRole) !== -1);
-    };
-    return loginService;
-});
-app.factory("AuthenticationService", function ($rootScope, Session, AuthorizationService) {
-    var sAuth = {};
-    sAuth.watchLoginChange = function () {
-        var _self = this;
-        FB.Event.subscribe('auth.authResponseChange', function (response) {
-            if (response.status === 'connected') {
-                //     _self.getUserInfo();
-                Session = response;
-                $rootScope.user.at = response.accessToken;
-            }
-            else {
-                Session.destroy(); // to be implemented
-                $rootScope.user = {};
-            }
-        });
-        return null;
-    };
-    sAuth.getUserInfo = function () {
-//        console.log("GET USER INFO");
-//            FB.api('/me/permissions', {
-//}, function(response) {
-//  console.log("/me",response);
-//});
-
-        var _self = this;
-        FB.api('/me', function (response) {
-            $rootScope.$apply(function () {
-                //   $rootScope.user = _self.user = response;
-                AuthorizationService.login($rootScope.user);
-                //             AuthorizationService.requestUser();
-            });
-        });
-    };
-    sAuth.logout = function () {
-        var _self = this;
-        FB.logout(function (response) {
-            $rootScope.$apply(function () {
-                $rootScope.user = _self.user = {};
-                Session.destroy();
-            });
-        });
-    };
-    return sAuth;
-});
-app.factory("AuthorizationService", function Authentication($q, $http, $cookieStore, $timeout, userService, $rootScope, AUTH_EVENTS, Session, $cookieStore, appConfig) {
-    var Authentication = {};
-    return  {
-        requestUser: function ()
-        {
-            console.log("request user");
-            var deferred = $q.defer();
-            if (Object.getOwnPropertyNames($rootScope.user).length !== 0) {
-                deferred.resolve();
-            } else {
-                if ($cookieStore.get('current_user')) {
-                    $rootScope.user = $cookieStore.get('current_user');
-                    Authentication = true;
-                    deferred.resolve();
-                } else {
-                    // User needs to login
-                    $rootScope.user = {};
-                    $rootScope.user =
-                            {"id": "999",
-                                "name": "guest",
-                                "role": "guest"};
-//                    FB.getLoginStatus(function (response) {
-                    //                      if (response.status === 'connected') {
-                    //                        this.login($rootScope.user);
-                    //                  } else {
-                    $rootScope.message = "Please login";
-                    //                }
-                    //          });
-                    deferred.resolve('true');
-                }
-            }
-            return deferred.promise;
-        },
-        getUser: function ()
-        {
-            return $rootScope.user;
-        },
-        exists: function ()
-        {
-            if (Object.getOwnPropertyNames($rootScope.user).length === 0 ||
-                    //  !$rootScope.user.hasOwnProperty("role") ||
-                    $rootScope.user.role === "guest") {
-                return false;
-            } else {
-                return true;
-            }
-        },
-        login: function () {
-            userService.getUser($rootScope.user.id)
-                    .success(function (user) {
-                        $rootScope.user = user;
-                        $cookieStore.put('current_user', $rootScope.user);
-                        document.getElementById('status-message').className = "alert alert-success";
-                    })
-                    .error(function (data) {
-                        if (data.message === "Document not found") {
-                            $rootScope.user.role = "user";
-                            $rootScope.user.score = "1001";
-                            $rootScope.user._id = $rootScope.user.id;
-                            $rootScope.user.nickname = $rootScope.user.name;
-                            userService.create($rootScope.user);
-                            document.getElementById('status-message').className = "alert alert-success";
-                        } else {
-                            $rootScope.error = "Error with login your in. Please contact administrator";
-                        }
-                    });
-            $rootScope.message = "";
-        },
-        logout: function ()
-        {
-            $rootScope.user = null;
-        },
-        isAdmin: function ()
-        {
-            if ($rootScope.user.hasOwnProperty("role")) {
-                return this.exists() && $rootScope.user.role === 'admin';
-            } else {
-                return false;
-            }
-        }
-    };
-});
 app.factory('Application', function Application() {
     var ready = false, registeredListeners = [];
     var callListeners = function () {
@@ -663,7 +520,7 @@ app.factory('Application', function Application() {
             registeredListeners[i]();
         }
         ;
-    }
+    };
     return {
         isReady: function () {
             return ready;
@@ -729,3 +586,48 @@ app.factory('RouteFilter', function RouteFilter($location) {
         }
     };
 });
+// Database Actions SERVICE
+app.factory('DbActionsService', function ($http, appConfig) {
+    var DbActionsService = {};
+    DbActionsService.getRecord = function (table, query) {
+        var url = appConfig.DbUrl + appConfig.DbPath + table +
+                '?q=' + query + '&apiKey=' + appConfig.DbId;
+        return $http.get(url);
+    };
+    DbActionsService.create = function (table, record) {
+        if (record.hasOwnProperty("_id")) {
+            console.log("!!!Attention. trying to create new record from existing record");
+        } else {
+            var url = appConfig.DbUrl + appConfig.DbPath + table + '?apiKey=' + appConfig.DbId;
+            return $http.post(url, record);
+        }
+    };
+    DbActionsService.delete = function (table, id) {
+        if (typeof (id) !== 'undefined') {
+            var url = appConfig.DbUrl + appConfig.DbPath + table + "/" + id + "?apiKey=" + appConfig.DbId;
+            return  $http.delete(url);
+        }
+    };
+    DbActionsService.update = function (table, id, attrs) {
+        if (typeof (id) !== 'undefined' && !attrs.hasOwnProperty('_id')) {
+            var url = appConfig.DbUrl + appConfig.DbPath + table + "/" +
+                    id + '?apiKey=' + appConfig.DbId;
+            return  $http.put(url, attrs);
+        } else {
+            console.log("!!!Attention. Wrong parameters on update operation");
+            console.log("ID: ", id);
+            console.log("Attrs: ", attrs);
+            return "error";
+        }
+    };
+    DbActionsService.getAll = function (table) {
+        var url = appConfig.DbUrl + appConfig.DbPath + table + "?apiKey=" + appConfig.DbId;
+        return $http.get(url);
+    };
+    DbActionsService.getRecord1 = function (table, id) {
+        var url = appConfig.DbUrl + appConfig.DbPath + table + "/" + id + "?apiKey=" + appConfig.DbId;
+        return $http.get(url);
+    };
+    return DbActionsService;
+});
+

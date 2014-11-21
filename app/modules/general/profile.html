@@ -1,6 +1,7 @@
 <div ng-cloak>
     <!--                        HEADER-->
     <custom-header></custom-header>
+    <h1> <ao-login></ao-login></h1>
     <!--HEADER                        -->
     <div class="row">
         <!--NAVIGATION-->
@@ -27,6 +28,13 @@
             <div>
                 <button class="btn btn-primary" ng-click="sendChallenge(null, 'hi')">Recommend to your friend</button>
             </div>
+
+            <div style="margin: 10px">
+                <div class="btn bg-primary" ng-click="logout()">Logout</div>
+            </div>
+            <!--            <div style="margin: 10px;">
+                            <div class="btn bg-primary" style="color:red" ng-click="delete_account()">Delete Account</div>
+                        </div>-->
         </div>
     </div>
 </div>

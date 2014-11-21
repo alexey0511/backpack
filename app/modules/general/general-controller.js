@@ -4,71 +4,87 @@ var generalModule = angular.module('general-module', [
     'ngAnimate',
     'directives'
 ]);
+app.controller('navigationController', function ($scope, $location)
+{
+//    console.log("navigationController");
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+});
 
-generalModule.directive('facebookComments', function () {
-    function createHTML(href, numposts, colorscheme) {
-        return '<div class="fb-comments" ' +
-                       'data-href="' + href + '" ' +
-                       'data-numposts="' + numposts + '" ' +
-                       'data-colorsheme="' + colorscheme + '">' +
-               '</div>';
+app.controller('headerController', function ($scope, $location, $rootScope)
+{
+    $scope.navHideShow = function () {
+        $rootScope.ui.navBar = !$rootScope.ui.navBar;
+    };
+    $scope.headerHideShow = function () {
+        $rootScope.ui.header = !$rootScope.ui.header;
+    };
+    $scope.goGoals = function () {
+        $location.path('/goals');
+    };
+
+    $scope.goHome = function () {
+        $location.path('/home');
     }
+    $scope.goProfile = function () {
+        $location.path('/profile');
+    }
+    $scope.goFeedback = function () {
+        $location.path('/feedback');
+    }
+    $scope.goOath = function () {
+        $location.path('/tc');
+    }
+});
 
-    return {
-        restrict: 'A',
-        scope: {},
-        link: function postLink(scope, elem, attrs) {
-            attrs.$observe('pageHref', function (newValue) {
-                var href        = newValue;
-                var numposts    = attrs.numposts    || 5;
-                var colorscheme = attrs.colorscheme || 'light';
 
-                elem.html(createHTML(href, numposts, colorscheme));
-                FB.XFBML.parse(elem[0]);
-            });
-        }
+generalModule.controller("tcCtrl", function ($scope, $location)
+{
+    $scope.confirm = function () {
+        $location.path("/goals");
     };
-}),
-
-// LOGIN PAGE CONTROLLER
- generalModule.controller("tcCtrl", function ($scope, $location)
- {
-     $scope.confirm = function() {
-         $location.path("/goals");
-     }
-     
-     
- });
-generalModule.controller('loginController', function ($scope, $cookieStore, $rootScope, AUTH_EVENTS, LoginService, Session, $location, userService) {
-
-    $rootScope.getAuthentication = function () {
-        if (Session.userId !== '') {
-            $rootScope.user.userId = Session.userId;
-            $rootScope.isAuthenticated = LoginService.isAuthenticated(Session);
-        }
-        return $rootScope.isAuthenticated;
-    };
-    $rootScope.signOut = function () {
-        Session.destroy();
-        $rootScope.getAuthentication();
-    };
-
-    $rootScope.setCurrentUser = function (user) {
-        alert(user.username);
-    };
-
-    // Log User IN  Application is calling login service
+});
+generalModule.controller('loginController', function () {
 }); // end of login controller
 
 ///
 
 // Profile PAGE CONTROLLER
-generalModule.controller('profileController', function ($scope, Session, LoginService) {
+generalModule.controller('profileController', function ($scope, sessionService, userService, $cookieStore, lsService, goalsService, $rootScope, $location) {
+    $scope.logout = function () {
+        var response = confirm("Are you sure?");
+        if (response === true) {
+            console.log("... login out from the system");
+            sessionService.deleteSession();
+            $cookieStore.remove('current_user');
+            $rootScope.user = '';
+            $location.path('/logout');
+        }
+    };
+    $scope.delete_account = function () {
+        var response = confirm("Are you sure?");
 
+        if (response === true) {
+            console.log("deleting user");
+
+            userService.delete($rootScope.user.id);
+            lsService.deleteGoals();
+            goalsService.deleteGoals()
+                    .success(function (data) {
+                        console.log("successfuly deleted");
+                    })
+                    .error(function (data) {
+                        console.og("error while deleting");
+                    });
+            $cookieStore.remove('current_user');
+            $rootScope.user = '';
+            $location.path('/logout');
+        }
+        ;
+    };
     $scope.sendChallenge = function (to, message) {
-        
         //FB.login(callback, {scope: 'user_friends'});
-
         var options = {
             method: 'apprequests'
         };
@@ -77,42 +93,13 @@ generalModule.controller('profileController', function ($scope, Session, LoginSe
         if (message)
             options.message = message;
         FB.ui(options, function (response) {
-    console.log('sendChallenge',response);        });
-    };
-    
-    
-    $scope.userId = 'empty username';
-    $scope.getUserId = function () {
-        $scope.userId = Session.userId;
-        $scope.user.username = $scope.userId;
-        $scope.user = {};
-        return $scope.userId;
-    };
-
-
-    $scope.getUser = function () {
-        if (typeof ($scope.getUserId) === "undefined") {
-            return;
-        } else {
-            LoginService.login($scope.user).then(function (responseUser) {
-//            console.log(user);
-                if (responseUser.data.length === 1) {
-
-                    // success - create session and redirect
-                    $scope.user = responseUser.data[0];
-                    console.log($scope.user);
-                    return $scope.user;
-
-                }
-            });  // end of call to login service
-
-        }
+            console.log('sendChallenge', response);
+        });
     };
 }); // end of controller
 
-
 // HOME PAGE CONTROLLER
-generalModule.controller('homeController', function ($scope) {
+generalModule.controller('homeController', function () {
 
 }); // end of home page controller
 // LOADING PAGE CONTROLLER
@@ -120,10 +107,10 @@ generalModule.controller('loadingController', function ($scope, $location, Appli
     Application.registerListener(function () {
         $location.path("/home");
 //                     $location.path('/goals');
-   });
+    });
 }); // end of loading page controller
 
 
 generalModule.controller('generalController', function ($scope) {
-    });
+});
     

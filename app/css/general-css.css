@@ -1,9 +1,16 @@
 html,body {
+    background-color: lightblue;
     background-image: url('../img/bg4.jpg');
     background-repeat: repeat;
     margin:0;
     padding:0;
     height:100%;
+}
+@media screen and (max-width: 640px){
+    html,body {
+        /* option 1: remove background altogether */
+        background-color: lightblue;
+    }
 }
 #wrapper {
     min-height: 100%;
@@ -103,7 +110,7 @@ html,body {
 #taskEditMenu div.error {color:red; font-weight:bold; margin-left: 100px;}
 
 #taskEditMenu {
-        background-color: #FFF;
+    background-color: #FFF;
     opacity: 0.8;
     padding: 0 0 20px 0px;
 }
