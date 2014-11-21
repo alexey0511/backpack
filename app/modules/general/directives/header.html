@@ -16,6 +16,9 @@
                     <button type="button" class="btn btn-primary my_icon" title="menu" ng-click="navHideShow()">
                         <span class="glyphicon glyphicon-list" ></span>
                     </button>
+                    <button ng-show="canAccess('/home')" type="button" class="btn btn-primary" title="home" ng-click="goHome()">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </button>
                     <button ng-show="canAccess('/profile')" type="button" class="btn btn-primary" title="profile" ng-click="goProfile()">
                         <span class="glyphicon glyphicon-user"></span>
                     </button>

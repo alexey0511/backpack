@@ -6,7 +6,7 @@
         <!--NAVIGATION-->
         <custom-navigation></custom-navigation>
 
-        <div id='main' class="col-md-9" style='border: 1px red outset'>
+        <div id='main' class="col-md-12" style='border: 1px red outset'>
             <div class="row">
                 <div class="col-md-3">
                     <h1>TOP 10 USERS</h1>
@@ -21,23 +21,29 @@
                     </table>
                 </div>
                 <div class="col-md-3">
-                    <h1>Quick links</h1>
-                    <ul>
-                        <li><a href=#>Guidelines</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Activities</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h1>        News FEED</h1>
+                    <h1><a ng-href='#/news'> News FEED</a></h1>
                     <div style="margin-bottom: 50px;">
                         <ul ng-repeat="new in news" >
                             <li>{{new .title}}</li>
                         </ul>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <h1><a ng-href='#/activities'> Activities</a></h1>
+                    <div style="margin-bottom: 50px;">
+                        <ul ng-repeat="act in activities" >
+                            <li>{{act.title}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h1>Quick links</h1>
+                    <ul>
+                        <li><a ng-href='#/guide/step-0'>Guidelines</a></li>
+                        <li><a ng-href="#/news">News</a></li>
+                        <li><a ng-href="#/activities">Activities</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div ng-include="'/modules/general/layout_after.html'"></div>
     </div>
-</div>

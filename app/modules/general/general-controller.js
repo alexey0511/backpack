@@ -29,23 +29,6 @@ generalModule.directive('facebookComments', function () {
         }
     };
 }),
-generalModule.directive('facebookLike', ['$timeout', function ($timeout) {
-    return {
-        template:
-            '<div class="fb-like" ' +
-                'data-href="" ' +
-                'data-send="false" ' +
-                'data-layout="button_count" ' +
-                'data-width="450" ' +
-                'data-show-faces="false"></div>',
-        link: function (scope, element, attributes) {
-            $timeout(function () {
-                return typeof FB !== "undefined" && FB !== null
-                    ? FB.XFBML.parse(element.parent()[0])
-                    : void 0; });
-            }
-    };
- }]),
 
 // LOGIN PAGE CONTROLLER
  generalModule.controller("tcCtrl", function ($scope, $location)
@@ -141,3 +124,6 @@ generalModule.controller('loadingController', function ($scope, $location, Appli
 }); // end of loading page controller
 
 
+generalModule.controller('generalController', function ($scope) {
+    });
+    

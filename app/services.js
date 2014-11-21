@@ -55,6 +55,14 @@ app.factory('goalsService', function goalsService($rootScope, $http, appConfig) 
         getNews: function() {
             var url = appConfig.DbUrl + appConfig.DbPath + "news?f={'title':1, 'details':1}&s={'date':1}&apiKey=" + appConfig.DbId;
             return $http.get(url);
+        },
+        getSuggestions: function() {
+            var url = appConfig.DbUrl + appConfig.DbPath + "suggestions?f={'title':1, 'description':1}&s={'date':1}&apiKey=" + appConfig.DbId;
+            return $http.get(url);
+        },
+        getActivities: function() {
+            var url = appConfig.DbUrl + appConfig.DbPath + "activities?f={'title':1, }&s={'timestamp':1}&apiKey=" + appConfig.DbId;
+            return $http.get(url);
         }
     };
 });

@@ -1,51 +1,21 @@
 var app = angular.module('directives', []);
 
 // FACEBOOK LOGIN
-app.directive('myFacebook', [
-    function () {
-        return {
-            link: function (scope, element, attrs) {
-// Load the SDK asynchronously
-                (function (d) {
-                    var js, id = 'facebook-jssdk',
-                            ref = d.getElementsByTagName('script')[0];
-                    if (d.getElementById(id)) {
-                        return;
-                    }
-                    js = d.createElement('script');
-                    js.id = id;
-                    js.async = true;
-                    js.src = "//connect.facebook.net/en_US/all.js";
-                    ref.parentNode.insertBefore(js, ref);
-                }(document));
-// Initialize FB
-                window.fbAsyncInit = function () {
-                    FB.init({
-                        appId: '1526114560951318',
-                        status: true, // check login status
-                        cookie: true, // enable cookies to access the session
-                        xfbml: false // parse XFBML
-                    });
-//Check FB Status
-                    FB.getLoginStatus(function (response) {
-                        if (response.status == 'connected') {
-                            FB.api('/me', function (response) {
-                                scope.$apply(function () {
-                                    scope.user = response;
-                                });
-                            });
-                        } else {
-                            FB.login();
-                        }
-                    });
-                };
-                scope.user.first_name = " ";
-                scope.user.last_name = " ";
-            },
-            template: "Welcome {{user.first_name}} {{user.last_name}}"
-        };
-    }
-]);
+app.directive('facebookLike', ['$timeout', function () {
+    return {
+        restrict: "E",
+        replace: true,
+        scope: "=data",
+        template:
+            '<div class="fb-like" ' +
+                'data-href="data" ' +
+                'data-send="false" ' +
+                'data-layout="standard" ' +
+                'data-action="like" ' +
+                'data-width="450" ' +
+                'data-show-faces="false"></div>'
+    };
+ }]);
 
 //
 // LOGIN

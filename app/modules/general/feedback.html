@@ -1,65 +1,36 @@
 <div ng-cloak>
     <!--                        HEADER-->
     <custom-header></custom-header>
-<!--HEADER                        -->
-<div class="row">
-    <!--NAVIGATION-->
-    <custom-navigation></custom-navigation>
-    <h1>Feedback page</h1>
+    <!--HEADER                        -->
+    <div class="row">
+        <!--NAVIGATION-->
+        <custom-navigation></custom-navigation>
+        <h1>Feedback page</h1>
         <div>
-        <button class="btn btn-primary" ng-click="sendChallenge(null, 'hi')">Recommend to your friend</button>
-    </div>
-    <div>
-        <button class="btn btn-primary" ng-click="sendBrag('SUP?')">Post on facebook</button>
-    </div>
+            <button class="btn btn-primary" ng-click="sendChallenge(null, 'hi')">Recommend to your friend</button>
+        </div>
 
-    <table class="table table-striped" style="width: 800px; border: 2px solid black">
-        <thead>
-            <tr><th>#</th><th></th><th>Function</th><th>Detailed description</th></tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td><td>
-<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com/1&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe></td><td>Ability to work offline</td><td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2</td><td>
-                    <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com/2&amp;&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Replace facebook comments with custom ones</td><td>This will add more privacy and flexability</td><td></td>
-            </tr>
-            <tr>
-                <td>3</td><td>
-                <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com/3&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="yes" frameborder="2" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Habits module</td><td>Implement special module which will be targeting development of good habits</td><td></td>
-            </tr>
-            <tr>
-                <td>4</td><td><iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Challenge module</td><td>You will be able to setup a challenges with your friends</td><td></td>
-            </tr>
-            <tr>
-                <td>5</td><td>
-                <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Sharing</td><td>Ability to share posts</td><td></td>
-            </tr>
-            <tr>
-                <td>6</td><td>
-                <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Add language support</td><td>Russian, Spanish, Portuguese, Arabic</td><td></td>
-            </tr>
-            <tr>
-                <td>7</td><td>
-                <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Flocal.host.com&amp;width=200&amp;layout=button&amp;action=like&amp;show_faces=true&amp;share=false&amp;height=80&amp;appId=1526114560951318" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:80px;" allowTransparency="true"></iframe>
-                </td><td>Your suggestion....</td><td>Please leave it into comments and I will add it to the list</td><td></td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <div>
-        <span>        Leave your suggestions and comments below</span>        <div id="facebook-comments" facebook-comments
-        page-href="https://local.host.com/#/feedback"
-        numposts="10"
-        colorscheme="light">
-</div>
+        <table class="table table-striped" style="width: 800px; border: 2px solid black">
+            <thead>
+                <tr><th>#</th><th>LIKE</th><th>Function</th><th>Detailed description</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="suggestion in suggestions">
+                    <td>{{$index}}</td>
+                    <td><facebook-like data="https://better-you-v0-1.herokuapp.com/#/feedback/{{suggestion._id.$oid}}"></facebook-like>
+                    </td>
+                    <td>{{suggestion.title}}</td>
+                    <td>{{suggestion.description}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    </div></div></div>
+        <div>
+            <span> <h1>       Leave your suggestions and comments below</h1></span>
+            <div id="facebook-comments" facebook-comments
+                 page-href="https://local.host.com/#/feedback"
+                 numposts="10"
+                 colorscheme="light">
+            </div>
+
+        </div></div></div>

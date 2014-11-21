@@ -36,9 +36,33 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'modules/goals/goals.html',
         controller: 'goalsController'
     });
-    $routeProvider.when('goals/weeks', {
+    $routeProvider.when('/goals/weeks', {
         templateUrl: 'modules/goals/goals.html',
         controller: 'goalsController'
+    });
+    $routeProvider.when('/news', {
+        templateUrl: 'modules/general/news.html',
+        controller: 'generalController'
+    });
+    $routeProvider.when('/activities', {
+        templateUrl: 'modules/general/activities.html',
+        controller: 'generalController'
+    });
+        $routeProvider.when('/guide/step-1', {
+        templateUrl: 'modules/general/guide/step_1.html',
+        controller: 'generalController'
+    });
+        $routeProvider.when('/guide/step-2', {
+        templateUrl: 'modules/general/guide/step_2.html',
+        controller: 'generalController'
+    });
+        $routeProvider.when('/guide/step-3', {
+        templateUrl: 'modules/general/guide/step_3.html',
+        controller: 'generalController'
+    });
+        $routeProvider.when('/guide/step-0', {
+        templateUrl: 'modules/general/guide/step_0_slide.html',
+        controller: 'generalController'
     });
     $routeProvider.when("/goals/:id/", {
         templateUrl: "modules/goals/editTaskDialog.html",
@@ -74,7 +98,7 @@ app.config(function ($routeProvider, $httpProvider) {
 // CONSTANTS
 app.constant('appConfig', {
     DbId: 'Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo',
-    fbId: '1526114560951318',
+    fbId: '1523326674563440',
     fbName: 'betterYou',
     DbPath: 'better-you/collections/',
     DbUrl: 'https://api.mongolab.com/api/1/databases/'
@@ -106,8 +130,8 @@ app.controller('navigationController', function ($scope, $location)
 app.controller('mainController', function (appConfig, lsService, $scope, $rootScope,
         RouteFilter, dateService, FBService, $q, $location, Application, $cookieStore, userService, goalsService)
 {
-    
-    
+
+
     // MainController has actions only for initializing facebook
 //    console.log(">mainController");
     // Read that value back
@@ -128,7 +152,26 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
                 $rootScope.message = "Can't display news";
                 console.log("can't display user news");
 
-            })
+            });
+    goalsService.getSuggestions().success(function (suggestions) {
+        console.log("Suggestions: ", suggestions);
+        $rootScope.suggestions = suggestions;
+    })
+            .error(function () {
+                $rootScope.message = "Can't display news";
+                console.log("can't display user news");
+
+            });
+    goalsService.getActivities().success(function (data) {
+        console.log("Activities: ", data);
+        $rootScope.activities = data;
+    })
+            .error(function () {
+                $rootScope.message = "Can't display news";
+                console.log("can't display user news");
+
+            });
+
     $rootScope.today = {};
     $rootScope.today.week = dateService.getWeek(new Date());
     $rootScope.today.month = new Date().getMonth();
@@ -140,6 +183,9 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
     }
     $scope.goGoals = function () {
         $location.path('/goals');
+    }
+    $scope.goHome = function () {
+        $location.path('/home');
     }
     $scope.goProfile = function () {
         $location.path('/profile');
@@ -171,7 +217,7 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
         });
         console.log("login (inside controller)");
     }
-       
+
     RouteFilter.run($location.path());
     // FACEBOOK INIT ACTIVATE FOR PROD...
     console.log("1. Initializing Facebook...");

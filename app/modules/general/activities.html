@@ -1,0 +1,22 @@
+<div ng-cloak>
+    <!--                        HEADER-->
+    <custom-header></custom-header>
+    <!--HEADER                        -->
+    <div class="row">
+        <!--NAVIGATION-->
+        <custom-navigation></custom-navigation>
+        <h1>Activities page</h1>
+        <table class="table table-striped" style="width: 800px; border: 2px solid black">
+            <thead>
+                <tr><th>#</th><th>Activity</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="act in activities">
+                    <td>{{$index+1}}</td>
+                    <td>{{act.title}}</td>
+                    <td>{{act.timestamp}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
