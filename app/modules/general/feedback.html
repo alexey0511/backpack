@@ -17,7 +17,7 @@
             <tbody>
                 <tr ng-repeat="suggestion in suggestions">
                     <td>{{$index}}</td>
-                    <td><facebook-like data="https://better-you-v0-1.herokuapp.com/#/feedback/{{suggestion._id.$oid}}"></facebook-like>
+                    <td><facebook-like data-href="https://better-you-v0-1.herokuapp.com/feedback/{{suggestion._id.$oid}}"></facebook-like>
                     </td>
                     <td>{{suggestion.title}}</td>
                     <td>{{suggestion.description}}</td>
