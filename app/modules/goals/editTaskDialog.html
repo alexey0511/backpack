@@ -5,9 +5,19 @@
     <div class='container-fluid' >
         <div class="row">
             <!--NAVIGATION-->
-            <div class="col-md-2">
+            <div>
                 <custom-navigation></custom-navigation>
             </div>
+            <div class="col-md-2" style="margin: 5px; border:1px solid black;">                
+                <h1>Examples of tasks</h1>
+                <ul>
+                    <li>Learn a language....</li>
+                    <li>Improve some skill .....</li>
+                    <li>Get a job ......</li>
+                    <li>Save money for ......</li>
+                    <li>Find a wife ......</li>
+                    <li>etc....</li>
+                </ul></div>
 
             <div class="col-md-6" id="taskEditMenu" ng-show="ui.task">
                 <form class="horisontal" ng-submit="editTask(task)" name="goalForm">
@@ -35,9 +45,9 @@
                         <div class="row" ng-show="task.type == 'week'" title='How many hours will it take to complete the task?'> <span class="col-md-3">Hours to Complete?*</span>
                             <input type='number' class="col-md-6" min="0" max='20' ng-model='task.cost' />
                         </div>
-<!--                        <div class="row"> <span class="col-md-3">Penalty</span>
-                            <input class="col-md-6" type="text" ng-model="task.penalty">
-                        </div>-->
+                        <!--                        <div class="row"> <span class="col-md-3">Penalty</span>
+                                                    <input class="col-md-6" type="text" ng-model="task.penalty">
+                                                </div>-->
                         <div class="row"ng-hide="task.type != 'week'"> <span class="col-md-3">Week</span>
                             <select ng-model="task.week" ng-options="week as week for week in weeks" class="col-md-6">
                                 <option>(select)</option>
@@ -64,16 +74,26 @@
                                 <option value="1">default</option>
                             </select>
                         </div>
-                        <div class="row"> <span class="col-md-3">Completed</span>
+                        <div class="row" ng-show="!task.new"> <span class="col-md-3">Completed</span>
                             <input type="checkbox" ng-model="task.done" class='col-md-1'>
                         </div>
-<!--                        <div class="row"> <span class="col-md-3">Picture</span>
-                            <input class="col-md-6" type="text" ng-model="task.picture">
-                        </div>-->
-                        <div class="row" title='If you want you can specify your friend who will look after completion of the task'> <span   class="col-md-3" ng-model="user.friends.summary.total.count" title="If you have friends using the app, they will appear in a dropdown box">
+                        <!--                        <div class="row"> <span class="col-md-3">Picture</span>
+                                                    <input class="col-md-6" type="text" ng-model="task.picture">
+                                                </div>-->
+                        <div ng-hide="true" class="row" title='If you want you can specify your friend who will look after completion of the task'> <span   class="col-md-3" ng-model="user.friends.summary.total.count" title="If you have friends using the app, they will appear in a dropdown box">
                                 Who checks completion?  (Total Friends):{{user.friends.summary.total_count}}</span>
                             <select class="col-md-6" ng-options"user.name for user in user.friends.data track by user.id">
-                                <option value="1">ME</option>
+                                    <option value="1">ME</option>
+                            </select>
+                        </div>
+                        <div class="row" title='category'> <span   class="col-md-3" >
+                                Category  </span>
+                            <select class="col-md-6" ng-model="task.category">
+                                <option value="Default">Default</option>
+                                <option value="Family">Family</option>
+                                <option value="Career">Career</option>
+                                <option value="Sport">Sport</option>
+                                <option value="Health">Health</option>
                             </select>
                         </div>
                         <button ng-show="task.new" type="submit" class="btn btn-primary btn-block" ng-disabled="goalForm.$invalid">Add</button>
@@ -82,8 +102,7 @@
                 </form>
                 <button  class="btn btn-danger btn-block" ng-click="deleteTask(task)">Delete</button>
             </div>
-                        <task-list class="col-md-4" source="goals" type="{{task.type}}" style="opacity: 0.5"></task-list>
-
+            <task-list class="col-md-3" source="goals" type="{{task.type}}" style="opacity: 0.5"></task-list>
         </div>
     </div>
 </div>

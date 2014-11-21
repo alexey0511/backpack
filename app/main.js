@@ -174,7 +174,7 @@ app.controller('mainController', function (appConfig, lsService, $scope, $rootSc
 
     $rootScope.today = {};
     $rootScope.today.week = dateService.getWeek(new Date());
-    $rootScope.today.month = new Date().getMonth();
+    $rootScope.today.month = new Date().getMonth()+1;
     $rootScope.today.year = new Date().getFullYear();
     $rootScope.ui = {};
     $rootScope.ui.navBar = false;

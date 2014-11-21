@@ -39,9 +39,8 @@ goalsModule.filter("goalsFilter", function () {
         return filtered;
     };
 });
-goalsModule.controller("taskDialogController", function ($scope, FBService, goalsService, lsService, dateService, $rootScope, $routeParams, $location) {
+goalsModule.controller("taskDialogController", function ($scope, FBService, goalsService, lsService, dateService, $rootScope, $routeParams, $location, idService) {
 // NEW EXP
-
     $rootScope.weeks = dateService.getWeeks();
     $rootScope.months = dateService.getMonths();
     $rootScope.years = dateService.getYears();
@@ -87,6 +86,9 @@ goalsModule.controller("taskDialogController", function ($scope, FBService, goal
 //// SETTING UP NEW TASK Variable    
     $scope.editTask = function (task) {
         task.new = false;
+        task.id = idService.generate();
+        delete $rootScope.goals['new'];
+        $rootScope.goals[task.id] = task;
         lsService.saveGoals();
         if ($rootScope.online) {
             goalsService.saveGoals();
@@ -261,7 +263,7 @@ goalsModule.directive("taskList", function ($rootScope, goalsService, ngDialog, 
                     alert("Relax, you are already busy for this week");
                 } else {
                     scope.newTask = {
-                        id: idService.generate(),
+                        id: 'new',
                         userId: $rootScope.user.id,
                         type: type,
                         week: $rootScope.today.week,
@@ -272,7 +274,6 @@ goalsModule.directive("taskList", function ($rootScope, goalsService, ngDialog, 
                         new : true
                     };
                     $rootScope.goals[scope.newTask.id] = scope.newTask;
-                    // save to local storage
                     lsService.saveGoals();
                     if ($rootScope.online) {
                         goalsService.saveGoals();
@@ -280,18 +281,21 @@ goalsModule.directive("taskList", function ($rootScope, goalsService, ngDialog, 
                         console.log("Can't save record to remote location");
                         $rootScope.messsage("Can't save record to remote location when Offline");
                     }
-                    $location.path("/goals/" + scope.newTask.id);
+                    $location.path("/goals/new");
                 }
             }
 
             scope.openAddGoalDialogChild = function (task) {
                 var type1;
+                var cost
                 switch (task.type) {
                     case "year":
                         type1 = 'month';
+                        cost = '';
                         break;
                     case "month":
                         type1 = 'week';
+                        cost = 1;
                         break;
                     default:
                 }
@@ -299,10 +303,10 @@ goalsModule.directive("taskList", function ($rootScope, goalsService, ngDialog, 
                     id: idService.generate(),
                     userId: $rootScope.user.id,
                     type: type1,
-                    week: $rootScope.today.week,
-                    month: $rootScope.today.month,
-                    year: $rootScope.today.year,
-                    cost: 1,
+                    week: task.week,
+                    month: task.month,
+                    year: task.year,
+                    cost: cost,
                     parent_goal: task.id,
                     new : true
                 };
