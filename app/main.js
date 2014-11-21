@@ -90,7 +90,7 @@ app.config(function ($routeProvider, $httpProvider) {
 // CONSTANTS
 app.constant('appConfig', {
     DbId: 'Enp-LXbc1lFrpXjd6CqVHGJ2AmhODPgo',
-    fbId: '1526114560951318',
+    fbId: '874535155891955',
     fbName: 'betterYou',
     DbPath: 'better-you/collections/',
     DbUrl: 'https://api.mongolab.com/api/1/databases/'
