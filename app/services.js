@@ -2,7 +2,7 @@ app.factory('dataService', function ($rootScope, goalsService) {
     return {
         getScores: function () {
             goalsService.getScores().success(function (data) {
-//                console.log("SCORES: ", data);
+                console.log("SCORES: ", data);
                 $rootScope.scores = data;
             })
                     .error(function () {
@@ -12,7 +12,7 @@ app.factory('dataService', function ($rootScope, goalsService) {
         },
         getActivities: function () {
             goalsService.getActivities().success(function (data) {
-//                console.log("Activities: ", data);
+                console.log("Activities: ", data);
                 $rootScope.activities = data;
             })
                     .error(function () {
@@ -22,7 +22,7 @@ app.factory('dataService', function ($rootScope, goalsService) {
         },
         getNews: function () {
             goalsService.getNews().success(function (data) {
-//                console.log("News: ", data);
+                console.log("News: ", data);
                 $rootScope.news = data;
             })
                     .error(function () {
@@ -32,7 +32,7 @@ app.factory('dataService', function ($rootScope, goalsService) {
         },
         getSuggestions: function () {
             goalsService.getSuggestions().success(function (suggestions) {
-                //               console.log("Suggestions: ", suggestions);
+                               console.log("Suggestions: ", suggestions);
                 $rootScope.suggestions = suggestions;
             })
                     .error(function () {
